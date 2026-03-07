@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { MessageSquare, Phone, Mail, MapPin, Send } from 'lucide-react';
+import { MessageSquare, Phone, Mail, MapPin, Send, CheckCircle2 } from 'lucide-react';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', subject: '', message: ''
-  });
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Message Sent. Our advisory team will contact you shortly.');
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch("https://formspree.io/f/xkoqnwbq", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setSubmitted(true);
+        form.reset();
+      } else {
+        alert('There was an error submitting your request. Please try again.');
+      }
+    } catch (error) {
+      alert('There was an error submitting your request. Please try again.');
+    }
   };
 
   return (
@@ -75,55 +93,68 @@ const Contact = () => {
           <div className="lg:col-span-2">
             <div className="bg-navy-800 p-10 md:p-12 border border-gold-500/20 rounded-sm">
               <h2 className="text-3xl font-display font-bold text-white mb-8">Send a Message</h2>
-              <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Full Name</label>
-                  <input 
-                    type="text" required
-                    className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Email Address</label>
-                  <input 
-                    type="email" required
-                    className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Phone Number</label>
-                  <input 
-                    type="tel" required
-                    className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Subject</label>
-                  <input 
-                    type="text" required
-                    className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                  />
-                </div>
-                <div className="md:col-span-2 space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Message</label>
-                  <textarea 
-                    rows={6} required
-                    className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  ></textarea>
-                </div>
-                <button 
-                  type="submit"
-                  className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-5 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+              
+              {submitted ? (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-gold-500/10 border border-gold-500/50 p-8 text-center rounded-sm"
                 >
-                  Send Inquiry
-                  <Send size={18} />
-                </button>
-              </form>
+                  <CheckCircle2 className="text-gold-500 mx-auto mb-4" size={48} />
+                  <h3 className="text-white text-xl font-bold mb-2">Message Sent</h3>
+                  <p className="text-slate-300">Thank you for contacting us. Our advisory team will respond to your inquiry shortly.</p>
+                  <button 
+                    onClick={() => setSubmitted(false)}
+                    className="mt-6 text-gold-500 font-bold text-sm uppercase tracking-widest hover:underline"
+                  >
+                    Send Another Message
+                  </button>
+                </motion.div>
+              ) : (
+                <form 
+                  action="https://formspree.io/f/xkoqnwbq" 
+                  method="POST"
+                  onSubmit={handleSubmit} 
+                  className="grid md:grid-cols-2 gap-8"
+                >
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Full Name</label>
+                    <input 
+                      type="text" name="name" required
+                      className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Email Address</label>
+                    <input 
+                      type="email" name="email" required
+                      className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
+                  <div className="md:col-span-2 space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Subject</label>
+                    <input 
+                      type="text" name="subject"
+                      className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
+                  <div className="md:col-span-2 space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Message / Question</label>
+                    <textarea 
+                      name="message"
+                      rows={6} required
+                      className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
+                    ></textarea>
+                  </div>
+                  <button 
+                    type="submit"
+                    className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-5 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+                  >
+                    Send Message
+                    <Send size={18} />
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

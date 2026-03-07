@@ -3,13 +3,31 @@ import { motion } from 'motion/react';
 import { Globe, ShieldCheck, DollarSign, FileText, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 const GoldenVisaAdvisory = () => {
-  const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', nationality: '', budget: '', country: '', timeline: '', message: ''
-  });
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Golden Visa Consultation Request Sent. Our advisor will contact you shortly.');
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch("https://formspree.io/f/xkoqnwbq", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setSubmitted(true);
+        form.reset();
+      } else {
+        alert('There was an error submitting your request. Please try again.');
+      }
+    } catch (error) {
+      alert('There was an error submitting your request. Please try again.');
+    }
   };
 
   return (
@@ -77,84 +95,96 @@ const GoldenVisaAdvisory = () => {
               <Globe className="text-gold-500" size={32} />
               <h2 className="text-3xl font-display font-bold text-white">Consultation Request</h2>
             </div>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Full Name</label>
-                <input 
-                  type="text" required
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Email</label>
-                <input 
-                  type="email" required
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Phone</label>
-                <input 
-                  type="tel" required
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Nationality</label>
-                <input 
-                  type="text" required
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, nationality: e.target.value})}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Investment Budget</label>
-                <input 
-                  type="text" required placeholder="e.g. $500,000+"
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, budget: e.target.value})}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Preferred Country</label>
-                <input 
-                  type="text" required
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, country: e.target.value})}
-                />
-              </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Timeline</label>
-                <select 
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, timeline: e.target.value})}
-                >
-                  <option value="">Select Timeline</option>
-                  <option value="immediate">Immediate</option>
-                  <option value="3-6-months">3-6 Months</option>
-                  <option value="6-12-months">6-12 Months</option>
-                  <option value="planning">Just Planning</option>
-                </select>
-              </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Message</label>
-                <textarea 
-                  rows={4}
-                  className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
-                ></textarea>
-              </div>
-              <button 
-                type="submit"
-                className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-4 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+
+            {submitted ? (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gold-500/10 border border-gold-500/50 p-8 text-center rounded-sm"
               >
-                Request Consultation
-                <ArrowRight size={18} />
-              </button>
-            </form>
+                <CheckCircle2 className="text-gold-500 mx-auto mb-4" size={48} />
+                <h3 className="text-white text-xl font-bold mb-2">Request Received</h3>
+                <p className="text-slate-300">Thank you for your consultation request. Our residency advisors will contact you shortly.</p>
+                <button 
+                  onClick={() => setSubmitted(false)}
+                  className="mt-6 text-gold-500 font-bold text-sm uppercase tracking-widest hover:underline"
+                >
+                  Send Another Request
+                </button>
+              </motion.div>
+            ) : (
+              <form 
+                action="https://formspree.io/f/xkoqnwbq" 
+                method="POST"
+                onSubmit={handleSubmit} 
+                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+              >
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Full Name</label>
+                  <input 
+                    type="text" name="name" required
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Email</label>
+                  <input 
+                    type="email" name="email" required
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Phone</label>
+                  <input 
+                    type="tel" name="phone"
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Nationality</label>
+                  <input 
+                    type="text" name="nationality"
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Investment Budget</label>
+                  <input 
+                    type="text" name="budget" placeholder="e.g. $500,000+"
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Preferred Country</label>
+                  <input 
+                    type="text" name="country"
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="md:col-span-2 space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Timeline</label>
+                  <input 
+                    type="text" name="timeline" placeholder="e.g. 3-6 months"
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  />
+                </div>
+                <div className="md:col-span-2 space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Message</label>
+                  <textarea 
+                    name="message"
+                    rows={4}
+                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                  ></textarea>
+                </div>
+                <button 
+                  type="submit"
+                  className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-4 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+                >
+                  Request Golden Visa Consultation
+                  <ArrowRight size={18} />
+                </button>
+              </form>
+            )}
           </motion.div>
         </div>
       </div>
