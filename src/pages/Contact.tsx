@@ -57,7 +57,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-1">Phone</p>
-                    <p className="text-white font-medium">+1 (234) 567-890</p>
+                    <a href="tel:+917768081438" className="text-white font-medium hover:text-gold-500 transition-colors">+91 7768081438 (International Support Line)</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -66,7 +66,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-1">Email</p>
-                    <p className="text-white font-medium">advisor@aerovisa.global</p>
+                    <a href="mailto:aerovisa_global@yahoo.com" className="text-white font-medium hover:text-gold-500 transition-colors">aerovisa_global@yahoo.com</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
