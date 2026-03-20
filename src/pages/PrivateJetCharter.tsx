@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Plane, Calendar, MapPin, Users, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import BackButton from '../components/BackButton';
 
 const PrivateJetCharter = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -33,6 +34,9 @@ const PrivateJetCharter = () => {
   return (
     <div className="bg-navy-900 min-h-screen pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <BackButton label="Back to Home" fallbackPath="/" />
+        </div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,33 +139,37 @@ const PrivateJetCharter = () => {
                     className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Travel Date</label>
-                  <input 
-                    type="date" name="date"
-                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  />
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Departure City</label>
+                    <input 
+                      type="text" name="departure" required
+                      className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Destination City</label>
+                    <input 
+                      type="text" name="destination" required
+                      className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Departure City</label>
-                  <input 
-                    type="text" name="departure"
-                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Destination City</label>
-                  <input 
-                    type="text" name="destination"
-                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Passengers</label>
-                  <input 
-                    type="number" name="passengers"
-                    className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
-                  />
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Travel Date</label>
+                    <input 
+                      type="date" name="travel_date" required
+                      className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Passengers</label>
+                    <input 
+                      type="number" name="passengers" min="1" max="20" required
+                      className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-slate-500 font-bold">Estimated Budget</label>

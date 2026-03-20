@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft } from 'lucide-react';
+import BackButton from './BackButton';
 
 interface LegalPageLayoutProps {
   title: string;
@@ -21,13 +20,9 @@ const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({ title, children }) =>
       className="min-h-screen bg-navy-900 pt-32 pb-20"
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link 
-          to="/" 
-          className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-bold mb-12 transition-colors group"
-        >
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Home
-        </Link>
+        <div className="mb-12">
+          <BackButton label="Back to Home" fallbackPath="/" />
+        </div>
         
         <header className="mb-16">
           <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">{title}</h1>

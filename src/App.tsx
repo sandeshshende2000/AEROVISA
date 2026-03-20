@@ -33,6 +33,11 @@ import HowItWorksPage from './pages/HowItWorks';
 import ContactPage from './pages/Contact';
 import PrivateJetCharterPage from './pages/PrivateJetCharter';
 import GoldenVisaAdvisoryPage from './pages/GoldenVisaAdvisory';
+import ProgramDetailsPage from './pages/ProgramDetails';
+import JetDetailsPage from './pages/JetDetails';
+
+// Import Data
+import { programs } from './data/programs';
 
 // --- Components ---
 
@@ -52,9 +57,11 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '#home' },
+    { name: 'Programs', href: '#programs' },
     { name: 'Services', href: '#services' },
     { name: 'Aircraft', href: '#aircraft' },
     { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Advisory', href: '/golden-visa-advisory' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -67,6 +74,11 @@ const Navbar = () => {
       } else {
         navigate('/');
       }
+      return;
+    }
+
+    if (href.startsWith('/')) {
+      navigate(href);
       return;
     }
 
@@ -111,8 +123,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <Link to="/" onClick={(e) => handleNavClick(e as any, '#home')} className="flex items-center">
-            <span className="text-2xl font-display font-bold text-gold-500 tracking-wider">AEROVISA</span>
-            <span className="ml-2 text-xs font-sans text-slate-400 tracking-[0.3em] uppercase hidden sm:block">Global</span>
+            <span className="text-2xl font-display font-bold text-gold-500 tracking-wider uppercase">AEROVISA</span>
+            <span className="ml-2 text-2xl font-display font-bold text-white tracking-wider uppercase hidden sm:block">GLOBAL</span>
           </Link>
           
           <div className="hidden lg:flex items-center space-x-4">
@@ -171,12 +183,13 @@ const Hero = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&q=80&w=2000" 
-          alt="Private Jet" 
+          src="https://images.unsplash.com/photo-1520437358207-323b43b50729?auto=format&fit=crop&q=80&w=2000" 
+          alt="Luxury Private Jet" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
@@ -184,17 +197,17 @@ const Hero = () => {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-2xl"
+          className="max-w-3xl"
         >
           <span className="inline-block text-gold-500 font-semibold tracking-[0.4em] uppercase text-sm mb-4">
             Private Jet Charter & Golden Visa Advisory
           </span>
           <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-tight mb-6">
             Secure Your <br />
-            <span className="text-gold-500 italic">Global Mobility</span>
+            <span className="text-gold-500 italic">Global Freedom</span>
           </h1>
-          <p className="text-xl text-slate-300 mb-10 leading-relaxed">
-            Bespoke Private Jet Charter & Golden Visa Advisory for International Investors and High-Net-Worth Clients.
+          <p className="text-xl text-slate-300 mb-10 leading-relaxed max-w-2xl">
+            Elite Private Jet Charter & Residency Solutions for Global Investors and High-Net-Worth Individuals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a 
@@ -215,8 +228,8 @@ const Hero = () => {
       </div>
 
       {/* World Map Background Decoration */}
-      <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
-        <Globe size={600} className="text-gold-500" />
+      <div className="absolute right-0 bottom-0 opacity-20 pointer-events-none">
+        <Globe size={700} className="text-gold-500" />
       </div>
     </section>
   );
@@ -246,8 +259,8 @@ const Services = () => {
         "Investment migration advisory",
         "Verified residency consultants"
       ],
-      cta: "Request Golden Visa Consultation",
-      href: "#visa-form",
+      cta: "Explore Programs",
+      href: "/golden-visa-advisory",
       icon: <Globe className="text-gold-500" size={40} />
     }
   ];
@@ -281,13 +294,23 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-              <a 
-                href={service.href} 
-                className="inline-flex items-center gap-2 text-gold-500 font-bold border-b border-gold-500/30 pb-1 hover:border-gold-500 transition-all"
-              >
-                {service.cta}
-                <ChevronRight size={18} />
-              </a>
+              {service.href.startsWith('/') ? (
+                <Link 
+                  to={service.href} 
+                  className="inline-flex items-center gap-2 text-gold-500 font-bold border-b border-gold-500/30 pb-1 hover:border-gold-500 transition-all"
+                >
+                  {service.cta}
+                  <ChevronRight size={18} />
+                </Link>
+              ) : (
+                <a 
+                  href={service.href} 
+                  className="inline-flex items-center gap-2 text-gold-500 font-bold border-b border-gold-500/30 pb-1 hover:border-gold-500 transition-all"
+                >
+                  {service.cta}
+                  <ChevronRight size={18} />
+                </a>
+              )}
             </motion.div>
           ))}
         </div>
@@ -300,6 +323,7 @@ const AircraftTypes = () => {
   const types = [
     {
       name: "Light Jet",
+      slug: "light-jet",
       passengers: "4–6",
       bestFor: "Short regional trips",
       description: "Agile and efficient, perfect for short-range travel and accessing smaller airports.",
@@ -309,6 +333,7 @@ const AircraftTypes = () => {
     },
     {
       name: "Midsize Jet",
+      slug: "midsize-jet",
       passengers: "7–9 passengers",
       bestFor: "Medium distance travel",
       description: "Midsize private jets provide greater range and comfort for medium-distance international flights.",
@@ -318,6 +343,7 @@ const AircraftTypes = () => {
     },
     {
       name: "Heavy Jet",
+      slug: "heavy-jet",
       passengers: "10–16",
       bestFor: "Long international flights",
       description: "Ultimate luxury for transcontinental travel, featuring full galleys and sleeping arrangements.",
@@ -337,7 +363,11 @@ const AircraftTypes = () => {
 
         <div className="grid md:grid-cols-3 gap-8">
           {types.map((type, idx) => (
-            <div key={idx} className="bg-navy-800 rounded-sm overflow-hidden border border-gold-500/10 group flex flex-col">
+            <Link 
+              key={idx} 
+              to={`/${type.slug}`}
+              className="bg-navy-800 rounded-sm overflow-hidden border border-gold-500/10 group flex flex-col hover:border-gold-500/30 transition-all"
+            >
               <div className="h-56 overflow-hidden">
                 <img 
                   src={type.image} 
@@ -372,8 +402,11 @@ const AircraftTypes = () => {
                     ))}
                   </ul>
                 </div>
+                <div className="mt-6 flex items-center text-gold-500 text-xs font-bold uppercase tracking-widest group-hover:gap-2 transition-all">
+                  View Aircraft Details <ChevronRight size={14} />
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -463,6 +496,146 @@ const HowItWorks = () => {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+};
+
+// --- Data ---
+// Moved to external file src/data/programs.ts
+
+const InvestmentPrograms = () => {
+  const navigate = useNavigate();
+
+  const handleBookConsultation = () => {
+    navigate('/golden-visa-advisory');
+    setTimeout(() => {
+      const element = document.getElementById('consultation-form');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  return (
+    <section id="programs" className="py-24 bg-navy-900 scroll-mt-20 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Explore Investment & Residency Programs</h2>
+            <div className="w-24 h-1 bg-gold-500 mx-auto"></div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {programs.map((program, idx) => (
+              <motion.div
+                key={program.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                whileHover={{ y: -10 }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                onClick={() => navigate(`/program/${program.slug}`)}
+                className="relative aspect-[3/4] cursor-pointer overflow-hidden group border border-slate-800"
+              >
+                <img 
+                  src={program.image} 
+                  alt={program.country}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="w-12 h-[1px] bg-gold-500 mb-4 transform origin-left transition-all duration-500 group-hover:w-full"></div>
+                  <h3 className="text-2xl font-display font-bold text-white mb-2">{program.country}</h3>
+                  <p className="text-gold-500 text-xs uppercase tracking-widest font-bold">{program.type}</p>
+                  
+                  <div className="mt-4 h-0 overflow-hidden group-hover:h-auto transition-all duration-500">
+                    <p className="text-slate-300 text-sm leading-relaxed line-clamp-2">
+                      {program.shortDesc}
+                    </p>
+                    <div className="mt-4 flex items-center text-white text-xs font-bold uppercase tracking-widest">
+                      View Program <ChevronRight className="w-4 h-4 ml-1 text-gold-500" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Why Invest Section */}
+          <div className="mt-32">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <h2 className="text-4xl font-display font-bold text-white mb-8">Why Invest in Global Residency & Citizenship?</h2>
+                <p className="text-slate-400 text-lg leading-relaxed mb-12">
+                  In an increasingly interconnected yet unpredictable world, a second residency or citizenship is the ultimate insurance policy. It provides your family with security, mobility, and access to global opportunities.
+                </p>
+                
+                <div className="grid sm:grid-cols-2 gap-8">
+                  {[
+                    { icon: <Globe className="w-6 h-6" />, title: "Global Mobility", desc: "Visa-free access to the world's most important business and travel hubs." },
+                    { icon: <ShieldCheck className="w-6 h-6" />, title: "Family Security", desc: "Access to world-class healthcare, education, and a safe environment." },
+                    { icon: <DollarSign className="w-6 h-6" />, title: "Tax Advantages", desc: "Optimize your wealth with favorable tax regimes and international structures." },
+                    { icon: <ArrowRight className="w-6 h-6" />, title: "Business Expansion", desc: "Establish a presence in major markets like the EU and North America." }
+                  ].map((item, idx) => (
+                    <div key={idx} className="space-y-3">
+                      <div className="text-gold-500">{item.icon}</div>
+                      <h4 className="text-white font-bold">{item.title}</h4>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="relative lg:col-span-2 mt-12">
+                <div className="aspect-[21/9] bg-navy-800 border border-slate-800 relative group overflow-hidden rounded-sm">
+                  <img 
+                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000" 
+                    alt="Luxury Modern Riverside Villa"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  {/* Dark Overlay for Readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-1000"></div>
+                  
+                  {/* Elegant Text Overlay */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8 }}
+                      viewport={{ once: true }}
+                      className="max-w-2xl"
+                    >
+                      <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight">
+                        Bespoke Advisory for the <span className="text-gold-500 italic">Global Elite</span>
+                      </h3>
+                      <p className="text-gold-500/90 font-sans text-sm md:text-base uppercase tracking-[0.3em] font-medium">
+                        Tailored Residency & Investment Solutions for Global Citizens
+                      </p>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-24 text-center">
+            <button 
+              onClick={handleBookConsultation}
+              className="bg-gold-500 hover:bg-gold-600 text-navy-950 px-12 py-5 text-sm font-bold uppercase tracking-[0.2em] transition-all transform hover:scale-105"
+            >
+              Book a Free Consultation
+            </button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -748,37 +921,23 @@ const PartnerNetwork = () => {
   return (
     <section className="py-24 bg-navy-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-4xl font-display font-bold text-white mb-6">Verified Partner Network</h2>
-            <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-              AeroVisa Global connects clients with trusted global partners. We act as your dedicated advisory and coordination platform, ensuring you reach the right experts for your specific needs.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              {categories.map((cat, idx) => (
-                <div key={idx} className="flex items-center gap-3 bg-navy-900 p-4 border border-gold-500/10 rounded-sm">
-                  <div className="text-gold-500">{cat.icon}</div>
-                  <span className="text-sm font-medium text-slate-300">{cat.name}</span>
-                </div>
-              ))}
-            </div>
-            <div className="bg-gold-500/10 border-l-4 border-gold-500 p-6">
-              <p className="text-gold-500 font-medium italic">
-                "All aviation services, charter agreements and flight operations are handled directly by licensed aviation operators or charter brokers."
-              </p>
-            </div>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-display font-bold text-white mb-6">Verified Partner Network</h2>
+          <p className="text-slate-400 text-lg mb-12 leading-relaxed">
+            AeroVisa Global connects clients with trusted global partners. We act as your dedicated advisory and coordination platform, ensuring you reach the right experts for your specific needs.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-6 mb-12">
+            {categories.map((cat, idx) => (
+              <div key={idx} className="flex items-center justify-center gap-4 bg-navy-900 p-6 border border-gold-500/10 rounded-sm">
+                <div className="text-gold-500">{cat.icon}</div>
+                <span className="text-base font-medium text-slate-300">{cat.name}</span>
+              </div>
+            ))}
           </div>
-          <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&q=80&w=1000" 
-              alt="Luxury Private Jet" 
-              className="rounded-sm shadow-2xl border border-gold-500/20"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute -bottom-8 -right-8 bg-navy-900 p-8 border border-gold-500/20 hidden md:block">
-              <div className="text-4xl font-display font-bold text-gold-500 mb-1">500+</div>
-              <div className="text-xs uppercase tracking-widest text-slate-500">Verified Partners</div>
-            </div>
+          <div className="bg-gold-500/10 border-l-4 border-gold-500 p-8 text-center">
+            <p className="text-gold-500 font-display font-bold italic text-lg">
+              "All aviation services, charter agreements and flight operations are handled directly by licensed aviation operators or charter brokers."
+            </p>
           </div>
         </div>
       </div>
@@ -887,7 +1046,8 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center mb-6">
-              <span className="text-2xl font-display font-bold text-gold-500 tracking-wider">AEROVISA</span>
+              <span className="text-2xl font-display font-bold text-gold-500 tracking-wider uppercase">AEROVISA</span>
+              <span className="ml-2 text-2xl font-display font-bold text-white tracking-wider uppercase">GLOBAL</span>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-6">
               Global advisory and coordination platform for private aviation and investment migration.
@@ -942,6 +1102,7 @@ const Home = () => {
       <PopularRoutes />
       <Services />
       <HowItWorks />
+      <InvestmentPrograms />
       <AircraftTypes />
       <BookingForms />
       <PartnerNetwork />
@@ -968,6 +1129,10 @@ export default function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/private-jet-charter" element={<PrivateJetCharterPage />} />
             <Route path="/golden-visa-advisory" element={<GoldenVisaAdvisoryPage />} />
+            <Route path="/program/:slug" element={<ProgramDetailsPage />} />
+            <Route path="/light-jet" element={<JetDetailsPage slug="light-jet" />} />
+            <Route path="/midsize-jet" element={<JetDetailsPage slug="midsize-jet" />} />
+            <Route path="/heavy-jet" element={<JetDetailsPage slug="heavy-jet" />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/advisory-disclaimer" element={<AdvisoryDisclaimer />} />

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { MessageSquare, Phone, Mail, MapPin, Send, CheckCircle2 } from 'lucide-react';
+import BackButton from '../components/BackButton';
 
 const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -33,6 +34,9 @@ const Contact = () => {
   return (
     <div className="bg-navy-900 min-h-screen pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <BackButton label="Back to Home" fallbackPath="/" />
+        </div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -66,7 +70,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-slate-500 text-xs uppercase tracking-widest font-bold mb-1">Email</p>
-                    <a href="mailto:aerovisa_global@yahoo.com" className="text-white font-medium hover:text-gold-500 transition-colors">aerovisa_global@yahoo.com</a>
+                    <a href="mailto:info@aerovisaglobal.com" className="text-white font-medium hover:text-gold-500 transition-colors">info@aerovisaglobal.com</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

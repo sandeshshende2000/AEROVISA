@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import BackButton from '../components/BackButton';
 
 const HowItWorks = () => {
   const steps = [
@@ -33,6 +34,9 @@ const HowItWorks = () => {
   return (
     <div className="bg-navy-900 min-h-screen pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <BackButton label="Back to Home" fallbackPath="/" />
+        </div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
