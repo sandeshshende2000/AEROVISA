@@ -47,6 +47,12 @@ const ProgramDetailsPage = () => {
         transition={{ duration: 0.5 }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
       >
+        <div className="mb-12">
+          <BackButton 
+            label="Back to Programs"
+          />
+        </div>
+
         <div className="bg-navy-800 border border-slate-800 overflow-hidden">
           <div className="relative h-[60vh]">
             <img 
@@ -57,11 +63,6 @@ const ProgramDetailsPage = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-b from-navy-950/60 via-navy-950/40 to-navy-800"></div>
             
-            <BackButton 
-              className="absolute top-8 left-8 z-10"
-              label="Back to Programs"
-            />
-
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
               <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-4">{program.country}</h2>
               <p className="text-gold-500 text-xl font-display italic">{program.type} Program</p>

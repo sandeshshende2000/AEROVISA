@@ -122,9 +122,9 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-navy-900/90 backdrop-blur-md border-b border-gold-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <Link to="/" onClick={(e) => handleNavClick(e as any, '#home')} className="flex items-center">
-            <span className="text-2xl font-display font-bold text-gold-500 tracking-wider uppercase">AEROVISA</span>
-            <span className="ml-2 text-2xl font-display font-bold text-white tracking-wider uppercase hidden sm:block">GLOBAL</span>
+          <Link to="/" onClick={(e) => handleNavClick(e as any, '#home')} className="flex flex-col sm:flex-row sm:items-center leading-none sm:leading-normal">
+            <span className="text-lg sm:text-2xl font-display font-bold text-gold-500 tracking-wider uppercase">AEROVISA</span>
+            <span className="sm:ml-2 text-lg sm:text-2xl font-display font-bold text-white tracking-wider uppercase">GLOBAL</span>
           </Link>
           
           <div className="hidden lg:flex items-center space-x-4">

@@ -247,8 +247,15 @@ const GoldenVisaAdvisory = () => {
   return (
     <div className="bg-navy-900 min-h-screen pt-32 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <BackButton label="Back to Home" fallbackPath="/" />
+        <div className="mb-12">
+          {selectedProgram ? (
+            <BackButton 
+              label="Back to Programs" 
+              onClick={() => setSelectedProgram(null)} 
+            />
+          ) : (
+            <BackButton label="Back to Home" fallbackPath="/" />
+          )}
         </div>
         <AnimatePresence mode="wait">
           {!selectedProgram ? (
@@ -347,13 +354,6 @@ const GoldenVisaAdvisory = () => {
               exit={{ opacity: 0, x: -20 }}
               className="max-w-5xl mx-auto"
             >
-              <button 
-                onClick={() => setSelectedProgram(null)}
-                className="flex items-center gap-2 text-gold-500 font-bold uppercase tracking-widest text-sm mb-10 hover:gap-3 transition-all"
-              >
-                <ChevronLeft size={20} /> Back to Programs
-              </button>
-
               <div className="grid lg:grid-cols-2 gap-12 mb-16">
                 <div>
                   <div className="mb-8">
