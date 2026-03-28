@@ -1,4 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
+import * as fs from 'fs';
+import * as path from 'path';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -8,7 +10,7 @@ async function generateLuxuryImage() {
     contents: {
       parts: [
         {
-          text: 'A premium, ultra-realistic 4K cinematic wide-angle shot of a modern luxury minimalist riverside villa at golden hour sunset. High-end architecture with large floor-to-ceiling glass windows revealing soft, warm interior lighting. The villa is situated on a calm riverbank with a perfect mirror reflection in the water. A sleek, high-end luxury car is subtly parked in the driveway. In the far distance, a faint, elegant city skyline is visible under a deep twilight sky. The color palette is dominated by deep blacks, rich golds, and neutral tones. High contrast with soft, long shadows. The image features an elegant text overlay in a minimal, modern luxury serif font. The main text "Bespoke Advisory for the Global Elite" is in a soft gold color, centered and balanced. Below it, a smaller subtitle "Tailored Residency & Investment Solutions for Global Citizens" is in a clean, soft white. The text is sophisticatedly spaced and clearly readable against the premium background. Mood: wealth, exclusivity, stability, and global elite lifestyle.',
+          text: 'A premium, ultra-realistic 4K cinematic wide-angle shot. A blended composition of a modern waterfront apartment skyline and a private tropical island with a luxury villa. Smooth cinematic transition between both elements. Golden sunset lighting with warm tones. Calm ocean or waterfront reflections. High-end architectural design. Luxury black and gold theme. Cinematic lighting and high contrast. Clean, minimal, and premium. Mood: exclusivity, rare opportunities, and high-value global investments for elite clients.',
         },
       ],
     },
@@ -22,7 +24,15 @@ async function generateLuxuryImage() {
 
   for (const part of response.candidates[0].content.parts) {
     if (part.inlineData) {
-      console.log(part.inlineData.data);
+      const base64Data = part.inlineData.data;
+      const buffer = Buffer.from(base64Data, 'base64');
+      const dir = path.join(process.cwd(), 'public', 'assets');
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      const filePath = path.join(dir, 'luxury-investment.png');
+      fs.writeFileSync(filePath, buffer);
+      console.log(`Image saved to ${filePath}`);
     }
   }
 }

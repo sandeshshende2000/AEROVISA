@@ -595,15 +595,15 @@ const InvestmentPrograms = () => {
               </div>
               
               <div className="relative lg:col-span-2 mt-12">
-                <div className="aspect-[21/9] bg-navy-800 border border-slate-800 relative group overflow-hidden rounded-sm">
+                <div className="aspect-[21/9] bg-black border border-gold-500/20 relative group overflow-hidden rounded-sm">
                   <img 
-                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000" 
-                    alt="Luxury Modern Riverside Villa"
+                    src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&q=80&w=2000" 
+                    alt="Luxury tropical private island villa with modern architecture at golden sunset"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />
-                  {/* Dark Overlay for Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-1000"></div>
+                  {/* Dark Overlay for Readability - Black Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-90 group-hover:opacity-85 transition-opacity duration-1000"></div>
                   
                   {/* Elegant Text Overlay */}
                   <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
@@ -614,11 +614,11 @@ const InvestmentPrograms = () => {
                       viewport={{ once: true }}
                       className="max-w-2xl"
                     >
-                      <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight">
-                        Bespoke Advisory for the <span className="text-gold-500 italic">Global Elite</span>
+                      <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
+                        Access Rare & <span className="text-gold-500 italic">Off-Market Opportunities</span>
                       </h3>
-                      <p className="text-gold-500/90 font-sans text-sm md:text-base uppercase tracking-[0.3em] font-medium">
-                        Tailored Residency & Investment Solutions for Global Citizens
+                      <p className="text-gold-500 font-sans text-sm md:text-base uppercase tracking-[0.3em] font-medium drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+                        Exclusive High-Value Global Investments for Elite Clients
                       </p>
                     </motion.div>
                   </div>
