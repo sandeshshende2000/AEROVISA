@@ -20,8 +20,7 @@ const PrivacyPolicy = () => {
         <ul className="list-disc pl-6 space-y-2">
           <li>Full name and contact details (email, phone number, WhatsApp)</li>
           <li>Nationality and residency information</li>
-          <li>Travel preferences and flight details</li>
-          <li>Investment budget and financial information for Golden Visa applications</li>
+          <li>Investment budget and financial information for residency applications</li>
         </ul>
       </section>
 
@@ -32,7 +31,7 @@ const PrivacyPolicy = () => {
         </p>
         <ul className="list-disc pl-6 space-y-2">
           <li>Provide professional advisory and coordination services</li>
-          <li>Connect you with verified aviation and immigration partners</li>
+          <li>Connect you with verified legal and investment partners</li>
           <li>Communicate with you regarding your inquiries and requests</li>
           <li>Ensure compliance with legal and regulatory requirements</li>
         </ul>
@@ -41,7 +40,7 @@ const PrivacyPolicy = () => {
       <section>
         <h2 className="text-2xl font-display font-bold text-white mb-4">4. Data Sharing and Disclosure</h2>
         <p>
-          As an advisory platform, we share your information with our verified partner network (aviation brokers, licensed operators, and immigration consultants) 
+          As an advisory platform, we share your information with our verified partner network (legal experts, investment firms, and immigration consultants) 
           only to the extent necessary to provide the services you have requested. We do not sell or rent your personal data to third parties.
         </p>
       </section>

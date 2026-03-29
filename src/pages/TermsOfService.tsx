@@ -16,8 +16,8 @@ const TermsOfService = () => {
         <h2 className="text-2xl font-display font-bold text-white mb-4">2. Nature of Services</h2>
         <p>
           AeroVisa Global acts solely as an advisory and coordination platform. We connect clients with third-party verified partners, 
-          including licensed aviation operators, charter brokers, and immigration consultants. 
-          We do not operate aircraft or provide legal immigration services directly.
+          including investment firms, legal experts, and immigration consultants. 
+          We do not provide legal or financial services directly.
         </p>
       </section>
 
@@ -33,7 +33,7 @@ const TermsOfService = () => {
         <h2 className="text-2xl font-display font-bold text-white mb-4">4. Limitation of Liability</h2>
         <p>
           AeroVisa Global shall not be liable for any direct, indirect, incidental, or consequential damages arising from the services 
-          provided by our third-party partners. All contracts for aviation or immigration services are entered into directly between the client and the partner.
+          provided by our third-party partners. All contracts for investment or immigration services are entered into directly between the client and the partner.
         </p>
       </section>
 

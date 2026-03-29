@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, Globe, Users, Plane } from 'lucide-react';
+import { ShieldCheck, Globe, Users, DollarSign } from 'lucide-react';
 import BackButton from '../components/BackButton';
 
 const About = () => {
@@ -19,7 +19,7 @@ const About = () => {
           <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">Excellence in Global Mobility</h1>
           <div className="w-24 h-1 bg-gold-500 mx-auto mb-8"></div>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
-            AeroVisa Global is a premier advisory and coordination platform dedicated to providing bespoke solutions for private aviation and investment migration.
+            AeroVisa Global is a premier advisory and coordination platform dedicated to providing bespoke solutions for residency and investment advisory.
           </p>
         </motion.div>
 
@@ -34,7 +34,7 @@ const About = () => {
               Our mission is to simplify the complexities of international travel and residency for high-net-worth individuals and corporate clients. We act as a bridge between our clients and a global network of verified partners, ensuring transparency, confidentiality, and professional excellence in every interaction.
             </p>
             <p className="text-slate-400 leading-relaxed">
-              Whether you require a last-minute private jet charter or a long-term residency strategy, AeroVisa Global provides the coordination and advisory services necessary to achieve your global mobility goals.
+              Whether you require a strategic investment or a long-term residency strategy, AeroVisa Global provides the coordination and advisory services necessary to achieve your global mobility goals.
             </p>
           </motion.div>
           <motion.div
@@ -54,10 +54,10 @@ const About = () => {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
-            { icon: <ShieldCheck size={32} />, title: "Verified Partners", desc: "Access to a vetted network of aviation and immigration experts." },
+            { icon: <ShieldCheck size={32} />, title: "Verified Partners", desc: "Access to a vetted network of legal and investment experts." },
             { icon: <Globe size={32} />, title: "Global Reach", desc: "Advisory services spanning across major international hubs." },
             { icon: <Users size={32} />, title: "Bespoke Service", desc: "Tailored solutions designed for your unique requirements." },
-            { icon: <Plane size={32} />, title: "Seamless Travel", desc: "Coordinated private aviation for maximum efficiency." }
+            { icon: <DollarSign size={32} />, title: "Strategic Investment", desc: "Coordinated investment strategies for maximum efficiency." }
           ].map((item, idx) => (
             <motion.div 
               key={idx}

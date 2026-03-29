@@ -30,13 +30,7 @@ const ProgramDetailsPage = () => {
   }
 
   const handleBookConsultation = () => {
-    navigate('/golden-visa-advisory');
-    setTimeout(() => {
-      const element = document.getElementById('consultation-form');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
+    navigate('/#contact');
   };
 
   return (

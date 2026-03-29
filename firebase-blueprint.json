@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "PropertySubmission": {
+      "title": "Property Submission",
+      "description": "A property submitted by an owner for listing.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Owner's full name" },
+        "email": { "type": "string", "format": "email", "description": "Owner's email address" },
+        "phone": { "type": "string", "description": "Owner's phone number" },
+        "propertyType": { "type": "string", "description": "Type of property (e.g., Villa, Apartment)" },
+        "location": { "type": "string", "description": "Property location" },
+        "price": { "type": "string", "description": "Asking price" },
+        "description": { "type": "string", "description": "Detailed description of the property" },
+        "imageUrl": { "type": "string", "description": "URL of the property image" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"], "description": "Approval status" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Submission timestamp" }
+      },
+      "required": ["name", "email", "phone", "propertyType", "location", "price", "description", "status", "createdAt"]
+    },
+    "ApprovedProperty": {
+      "title": "Approved Property",
+      "description": "A property that has been approved by the admin for public listing.",
+      "type": "object",
+      "properties": {
+        "propertyType": { "type": "string", "description": "Type of property" },
+        "location": { "type": "string", "description": "Property location" },
+        "price": { "type": "string", "description": "Asking price" },
+        "description": { "type": "string", "description": "Detailed description" },
+        "imageUrl": { "type": "string", "description": "URL of the property image" },
+        "features": { "type": "array", "items": { "type": "string" }, "description": "List of key features" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Approval timestamp" }
+      },
+      "required": ["propertyType", "location", "price", "description", "imageUrl", "createdAt"]
+    },
+    "PropertyInquiry": {
+      "title": "Property Inquiry",
+      "description": "An inquiry from a potential buyer for a listed property.",
+      "type": "object",
+      "properties": {
+        "propertyId": { "type": "string", "description": "ID of the property" },
+        "name": { "type": "string", "description": "Inquirer's name" },
+        "email": { "type": "string", "format": "email", "description": "Inquirer's email" },
+        "phone": { "type": "string", "description": "Inquirer's phone" },
+        "message": { "type": "string", "description": "Inquiry message" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Inquiry timestamp" }
+      },
+      "required": ["propertyId", "name", "email", "phone", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/propertySubmissions/{submissionId}": {
+      "schema": "PropertySubmission",
+      "description": "Collection of property submissions from owners."
+    },
+    "/approvedProperties/{propertyId}": {
+      "schema": "ApprovedProperty",
+      "description": "Collection of properties approved for public listing."
+    },
+    "/propertyInquiries/{inquiryId}": {
+      "schema": "PropertyInquiry",
+      "description": "Collection of buyer inquiries for approved properties."
+    }
+  }
+}

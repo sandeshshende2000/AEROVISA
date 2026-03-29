@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import BackButton from '../components/BackButton';
 
@@ -8,20 +9,20 @@ const HowItWorks = () => {
     {
       number: "01",
       title: "Initial Consultation",
-      description: "Submit your inquiry through our confidential platform. Our advisors will review your requirements for private aviation or investment migration.",
+      description: "Submit your inquiry through our confidential platform. Our advisors will review your requirements for residency advisory or investment opportunities.",
       details: ["Confidential data handling", "Expert initial assessment", "Clear communication channels"]
     },
     {
       number: "02",
       title: "Partner Matching",
-      description: "We identify and connect you with the most suitable verified partners from our global network of aviation brokers and immigration consultants.",
+      description: "We identify and connect you with the most suitable verified partners from our global network of legal and investment partners.",
       details: ["Vetted partner network", "Direct expert connections", "Tailored matching process"]
     },
     {
       number: "03",
       title: "Solution Design",
-      description: "Our partners work with you to design a bespoke travel itinerary or a comprehensive residency by investment strategy.",
-      details: ["Custom travel planning", "Strategic investment advice", "Detailed proposal review"]
+      description: "Our partners work with you to design a comprehensive residency by investment strategy.",
+      details: ["Strategic investment advice", "Detailed proposal review", "Risk assessment & planning"]
     },
     {
       number: "04",
@@ -96,13 +97,13 @@ const HowItWorks = () => {
           <p className="text-navy-900/80 mb-8 max-w-2xl mx-auto font-medium">
             Contact our advisory team today to begin your journey towards seamless global mobility.
           </p>
-          <a 
-            href="/contact" 
+          <Link 
+            to="/#contact" 
             className="inline-flex items-center gap-2 bg-navy-900 text-gold-500 px-10 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-navy-800 transition-colors"
           >
             Contact Advisor
             <ArrowRight size={18} />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </div>

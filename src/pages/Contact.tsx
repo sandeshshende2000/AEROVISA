@@ -46,7 +46,7 @@ const Contact = () => {
           <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">Contact Advisory</h1>
           <div className="w-24 h-1 bg-gold-500 mx-auto mb-8"></div>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
-            Our global advisory team is available to discuss your private aviation and investment migration requirements.
+            Our global advisory team is available to discuss your residency and investment requirements.
           </p>
         </motion.div>
 
