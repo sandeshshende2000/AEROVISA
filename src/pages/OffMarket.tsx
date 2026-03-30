@@ -11,7 +11,7 @@ const offMarketProperties = [
     title: 'Private River Villa',
     location: 'Portugal',
     description: 'Luxury villa with river view, high ROI potential',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1200',
     roi: '6-8% Annual',
     eligibility: 'Golden Visa Eligible'
   },
@@ -20,7 +20,7 @@ const offMarketProperties = [
     title: 'Lisbon Riverside Hotel Investment',
     location: 'Lisbon, Portugal',
     description: 'Premium hospitality investment in Lisbon',
-    image: 'https://images.unsplash.com/photo-1555854816-802f188095e4?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200',
     roi: '7-9% Annual',
     eligibility: 'Investment Fund Eligible'
   },

@@ -50,7 +50,7 @@ const programs: Program[] = [
       'Valid health insurance'
     ],
     timeline: '12–18 months for initial residency permit.',
-    image: 'https://images.unsplash.com/photo-1585211756841-9882341ca31b?auto=format&fit=crop&q=80&w=1200'
+    image: 'https://images.unsplash.com/photo-1555854816-802f188095e4?auto=format&fit=crop&q=80&w=1200'
   },
   {
     id: 'greece',

@@ -214,8 +214,8 @@ const Hero = () => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=2000" 
-          alt="Luxury Waterfront Property" 
+          src="https://images.unsplash.com/photo-1600585154340-be6199f7a096?auto=format&fit=crop&q=80&w=2000" 
+          alt="Luxury Modern Architecture" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -538,8 +538,8 @@ const WhyInvest = () => {
           <div className="relative">
             <div className="aspect-square bg-navy-800 border border-gold-500/10 p-2 rounded-sm overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200" 
-                alt="Luxury Lifestyle"
+                src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1200" 
+                alt="Luxury Lifestyle and Investment"
                 className="w-full h-auto min-h-full object-cover opacity-80"
                 referrerPolicy="no-referrer"
               />
@@ -835,7 +835,7 @@ const PropertyListing = () => {
   const tiers = [
     {
       name: "Basic",
-      price: "$999",
+      price: "$49",
       features: [
         "Website Listing",
         "Exposure to Global Investors",
@@ -844,7 +844,7 @@ const PropertyListing = () => {
     },
     {
       name: "Premium",
-      price: "$2,499",
+      price: "$199",
       popular: true,
       features: [
         "Website Listing",
@@ -856,7 +856,7 @@ const PropertyListing = () => {
     },
     {
       name: "Elite",
-      price: "$4,999",
+      price: "$499",
       features: [
         "Website Listing",
         "Featured Placement",
@@ -1316,8 +1316,8 @@ const FinalCTA = () => {
     <section className="relative py-20 mb-20 bg-navy-900 overflow-hidden block clear-both z-10">
       <div className="absolute inset-0 opacity-10">
         <img 
-          src="https://images.unsplash.com/photo-1464037862646-647f1856d5ec?auto=format&fit=crop&q=80&w=2000" 
-          alt="Luxury" 
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000" 
+          alt="Modern Business Architecture" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />

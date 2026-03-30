@@ -44,8 +44,8 @@ const About = () => {
             className="relative"
           >
             <img 
-              src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=1200" 
-              alt="Luxury Lifestyle" 
+              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1200" 
+              alt="Luxury Business Lifestyle" 
               className="w-full h-auto rounded-sm shadow-2xl border border-gold-500/20"
               referrerPolicy="no-referrer"
             />

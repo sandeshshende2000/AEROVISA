@@ -20,7 +20,7 @@ const offMarketProperties = [
     title: 'Private River Villa',
     location: 'Portugal',
     description: 'This ultra-exclusive riverfront villa offers unparalleled privacy and luxury. Designed with modern architecture and high-end finishes, it features a private dock, infinity pool, and expansive outdoor living spaces. A rare investment opportunity in one of Portugal\'s most sought-after locations.',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1200',
     roi: '6-8% Annual',
     eligibility: 'Golden Visa Eligible',
     highlights: [
@@ -36,7 +36,7 @@ const offMarketProperties = [
     title: 'Lisbon Riverside Hotel Investment',
     location: 'Lisbon, Portugal',
     description: 'A premium hospitality investment opportunity in the heart of Lisbon\'s revitalized riverside district. This boutique hotel project combines historic charm with contemporary luxury, catering to the high-end tourism market. Investors benefit from a strategic location and professional management.',
-    image: 'https://images.unsplash.com/photo-1555854816-802f188095e4?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200',
     roi: '7-9% Annual',
     eligibility: 'Investment Fund Eligible',
     highlights: [
