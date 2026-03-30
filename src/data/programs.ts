@@ -39,7 +39,7 @@ export const programs: Program[] = [
       'Valid health insurance'
     ],
     timeline: '12–18 months',
-    image: 'https://images.unsplash.com/photo-1513740881789-a563b968c783?auto=format&fit=crop&q=80&w=1200'
+    image: 'https://images.unsplash.com/photo-1585211756841-9882341ca31b?auto=format&fit=crop&q=80&w=1200'
   },
   {
     id: 'greece',

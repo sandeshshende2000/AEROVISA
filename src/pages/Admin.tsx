@@ -23,7 +23,7 @@ import {
   Timestamp 
 } from 'firebase/firestore';
 
-const ADMIN_EMAIL = 'sandeshshende2000@gmail.com';
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'sandeshshende2000@gmail.com';
 
 const AdminPage = () => {
   const [user, setUser] = useState<any>(null);

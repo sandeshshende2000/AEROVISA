@@ -28,7 +28,7 @@ export const featuredProperties: Property[] = [
     price: '€1,200,000',
     type: 'Penthouse',
     label: 'Off-Market',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1603565320527-3b3fd65b73bb?auto=format&fit=crop&q=80&w=1200',
     features: ['Roof Garden', 'Panoramic Views', 'Luxury Finishes', '3 Bedrooms']
   },
   {

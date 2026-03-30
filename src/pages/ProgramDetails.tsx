@@ -30,7 +30,7 @@ const ProgramDetailsPage = () => {
   }
 
   const handleBookConsultation = () => {
-    navigate('/#contact');
+    navigate('/consultation');
   };
 
   return (

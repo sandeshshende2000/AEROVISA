@@ -21,17 +21,17 @@ const ResidencyPrograms = () => {
 
         {/* Header */}
         <div className="text-center mb-20">
-          <span className="text-gold-500 font-bold uppercase tracking-[0.4em] text-sm mb-4 block">Investment Migration</span>
-          <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">Residency by Investment Programs</h1>
+          <span className="text-gold-500 font-bold uppercase tracking-[0.4em] text-[10px] sm:text-sm mb-4 block">Investment Migration</span>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-white mb-6 leading-tight">Residency by Investment Programs</h1>
           <div className="w-24 h-1 bg-gold-500 mx-auto mb-8"></div>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             Secure your global mobility and future with the world's most prestigious residency programs. 
             Strategic investments for long-term freedom and security.
           </p>
         </div>
 
         {/* Programs Grid */}
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 max-w-5xl mx-auto">
           {programs.map((program, idx) => (
             <motion.div
               key={program.id}
@@ -41,7 +41,7 @@ const ResidencyPrograms = () => {
               className="bg-navy-800 border border-gold-500/20 rounded-sm overflow-hidden group flex flex-col h-full"
             >
               {/* Image Container */}
-              <div className="relative h-72 overflow-hidden">
+              <div className="relative aspect-video sm:h-72 overflow-hidden">
                 <img 
                   src={program.image} 
                   alt={program.country} 

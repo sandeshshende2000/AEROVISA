@@ -44,9 +44,9 @@ const About = () => {
             className="relative"
           >
             <img 
-              src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&q=80&w=1000" 
-              alt="Luxury Travel" 
-              className="rounded-sm shadow-2xl border border-gold-500/20"
+              src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&q=80&w=1200" 
+              alt="Luxury Lifestyle" 
+              className="w-full h-auto rounded-sm shadow-2xl border border-gold-500/20"
               referrerPolicy="no-referrer"
             />
           </motion.div>

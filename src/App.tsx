@@ -38,57 +38,11 @@ import {
   getDocFromServer
 } from 'firebase/firestore';
 
-// --- Error Handling ---
-enum OperationType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  LIST = 'list',
-  GET = 'get',
-  WRITE = 'write',
-}
 
-interface FirestoreErrorInfo {
-  error: string;
-  operationType: OperationType;
-  path: string | null;
-  authInfo: {
-    userId: string | undefined;
-    email: string | null | undefined;
-    emailVerified: boolean | undefined;
-    isAnonymous: boolean | undefined;
-    tenantId: string | null | undefined;
-    providerInfo: {
-      providerId: string;
-      displayName: string | null;
-      email: string | null;
-      photoUrl: string | null;
-    }[];
-  }
-}
+// --- Components ---
 
-function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
-  const errInfo: FirestoreErrorInfo = {
-    error: error instanceof Error ? error.message : String(error),
-    authInfo: {
-      userId: auth.currentUser?.uid,
-      email: auth.currentUser?.email,
-      emailVerified: auth.currentUser?.emailVerified,
-      isAnonymous: auth.currentUser?.isAnonymous,
-      tenantId: auth.currentUser?.tenantId,
-      providerInfo: auth.currentUser?.providerData.map(provider => ({
-        providerId: provider.providerId,
-        displayName: provider.displayName,
-        email: provider.email,
-        photoUrl: provider.photoURL
-      })) || []
-    },
-    operationType,
-    path
-  }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
-}
+
+
 
 // Import Pages
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -102,7 +56,13 @@ import ConsultationPage from './pages/Consultation';
 import ResidencyByInvestmentAdvisoryPage from './pages/ResidencyByInvestmentAdvisory';
 import ResidencyProgramsPage from './pages/ResidencyPrograms';
 import ProgramDetailsPage from './pages/ProgramDetails';
+import PropertyDetailsPage from './pages/PropertyDetails';
 import AdminPage from './pages/Admin';
+import OffMarketPage from './pages/OffMarket';
+import OffMarketPropertyDetails from './pages/OffMarketPropertyDetails';
+
+// Import Utils
+import { handleFirestoreError, OperationType } from './lib/utils';
 
 // Import Data
 import { programs } from './data/programs';
@@ -117,6 +77,7 @@ const ScrollToTop = () => {
   }, [pathname]);
   return null;
 };
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -192,8 +153,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <Link to="/" onClick={(e) => handleNavClick(e as any, '#home')} className="flex flex-col sm:flex-row sm:items-center leading-none sm:leading-normal">
-            <span className="text-lg sm:text-2xl font-display font-bold text-gold-500 tracking-wider uppercase">AEROVISA</span>
-            <span className="sm:ml-2 text-lg sm:text-2xl font-display font-bold text-white tracking-wider uppercase">GLOBAL</span>
+            <span className="text-xl sm:text-2xl font-display font-bold text-gold-500 tracking-wider uppercase">AEROVISA</span>
+            <span className="sm:ml-2 text-xl sm:text-2xl font-display font-bold text-white tracking-wider uppercase">GLOBAL</span>
           </Link>
           
           <div className="hidden lg:flex items-center space-x-4">
@@ -249,7 +210,7 @@ const Navbar = () => {
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <section id="home" className="relative h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden py-20">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -259,24 +220,24 @@ const Hero = () => {
           referrerPolicy="no-referrer"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         <motion.div 
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
           className="max-w-3xl"
         >
-          <span className="inline-block text-gold-500 font-semibold tracking-[0.4em] uppercase text-sm mb-4">
+          <span className="inline-block text-gold-500 font-semibold tracking-[0.4em] uppercase text-[10px] sm:text-sm mb-4">
             Residency & Investment Advisory
           </span>
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-tight mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold text-white leading-tight mb-6">
             Secure Your <br />
             <span className="text-gold-500 italic">Global Freedom</span>
           </h1>
-          <p className="text-xl text-slate-200 mb-10 leading-relaxed max-w-2xl">
+          <p className="text-lg sm:text-xl text-slate-200 mb-10 leading-relaxed max-w-2xl">
             Elite Residency & Investment Solutions for Global Investors and High-Net-Worth Individuals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -318,6 +279,7 @@ const Hero = () => {
 };
 
 const Services = () => {
+  const navigate = useNavigate();
   const services = [
     {
       title: "Strategic Residency & Investment Advisory",
@@ -342,32 +304,20 @@ const Services = () => {
         "Private wealth preservation solutions"
       ],
       cta: "Contact Advisory",
-      href: "#contact",
+      href: "/consultation",
       icon: <ShieldCheck className="text-gold-500" size={40} />
     }
   ];
 
   const handleCtaClick = (e: React.MouseEvent, href: string) => {
-    if (href === '#contact') {
+    if (href === '/consultation') {
       e.preventDefault();
-      const element = document.getElementById('contact');
-      if (element) {
-        const offset = 80;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+      navigate('/consultation');
     }
   };
 
   return (
-    <section id="services" className="py-24 bg-navy-800 scroll-mt-20">
+    <section id="services" className="relative py-20 mb-20 bg-navy-800 scroll-mt-20 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight">Strategic Residency & Investment Advisory</h2>
@@ -426,6 +376,7 @@ const Services = () => {
 
 
 const HowItWorks = () => {
+  const navigate = useNavigate();
   const steps = [
     {
       number: "01",
@@ -445,7 +396,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-navy-800 scroll-mt-20">
+    <section id="how-it-works" className="relative py-20 mb-20 bg-navy-800 scroll-mt-20 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">How It Works</h2>
@@ -468,21 +419,7 @@ const HowItWorks = () => {
 
         <div className="text-center">
           <button 
-            onClick={() => {
-              const element = document.getElementById('contact');
-              if (element) {
-                const offset = 80;
-                const bodyRect = document.body.getBoundingClientRect().top;
-                const elementRect = element.getBoundingClientRect().top;
-                const elementPosition = elementRect - bodyRect;
-                const offsetPosition = elementPosition - offset;
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: 'smooth'
-                });
-              }
-            }}
+            onClick={() => navigate('/consultation')}
             className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-navy-900 px-10 py-4 rounded-sm font-bold transition-all uppercase tracking-widest text-sm"
           >
             Start Your Advisory Process
@@ -501,7 +438,7 @@ const InvestmentPrograms = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="programs" className="py-24 bg-navy-900 scroll-mt-20 overflow-hidden">
+    <section id="programs" className="relative py-20 mb-20 bg-navy-900 scroll-mt-20 overflow-hidden block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -510,7 +447,7 @@ const InvestmentPrograms = () => {
           viewport={{ once: true }}
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4 uppercase tracking-wider">Residency by Investment Programs</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4 uppercase tracking-wider leading-tight">Residency by Investment Programs</h2>
             <div className="w-24 h-1 bg-gold-500 mx-auto"></div>
           </div>
 
@@ -569,23 +506,11 @@ const WhyInvest = () => {
   const navigate = useNavigate();
 
   const handleBookConsultation = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
+    navigate('/consultation');
   };
 
   return (
-    <section className="py-32 bg-navy-900 relative z-10 border-t border-gold-500/10">
+    <section className="relative py-20 mb-20 bg-navy-900 border-t border-gold-500/10 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -613,9 +538,9 @@ const WhyInvest = () => {
           <div className="relative">
             <div className="aspect-square bg-navy-800 border border-gold-500/10 p-2 rounded-sm overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1578683316226-999de144ce1f?auto=format&fit=crop&q=80&w=1200" 
+                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200" 
                 alt="Luxury Lifestyle"
-                className="w-full h-full object-cover opacity-80"
+                className="w-full h-auto min-h-full object-cover opacity-80"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-transparent to-transparent"></div>
@@ -637,34 +562,50 @@ const WhyInvest = () => {
 };
 
 const OffMarketSection = () => {
+  const navigate = useNavigate();
   return (
-    <section className="py-32 bg-navy-900 relative z-10 border-t border-gold-500/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="aspect-[16/9] md:aspect-[21/9] bg-black border border-gold-500/20 relative group overflow-hidden rounded-sm shadow-2xl">
+    <section className="relative py-20 mb-20 bg-navy-900 border-t border-b border-gold-500/10 block clear-both z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div 
+          onClick={() => navigate('/off-market')}
+          className="aspect-[16/9] md:aspect-[21/9] bg-black border border-gold-500/20 relative group overflow-hidden rounded-sm shadow-2xl z-10 cursor-pointer"
+        >
           <img 
-            src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&q=80&w=2000" 
-            alt="Luxury tropical private island villa with modern architecture at golden sunset"
+            src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=2000" 
+            alt="Elite Private Riverfront Villa at Sunset"
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             referrerPolicy="no-referrer"
           />
-          {/* Dark Overlay for Readability - Black Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 group-hover:opacity-60 transition-opacity duration-1000"></div>
+          {/* Enhanced Dark Overlay for Premium Readability */}
+          <div className="absolute inset-0 bg-navy-950/60 group-hover:bg-navy-950/50 transition-all duration-1000"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/40 to-transparent"></div>
           
-          {/* Elegant Text Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
+          {/* Elegant Text Overlay - Aligned for the new composition */}
+          <div className="absolute inset-0 flex flex-col justify-center p-6 sm:p-12 md:p-20 z-10">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
               className="max-w-2xl"
             >
-              <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
-                Access Rare & <span className="text-gold-500 italic">Off-Market Opportunities</span>
+              <span className="text-gold-500 font-sans text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.4em] font-bold mb-4 sm:mb-6 block drop-shadow-lg">
+                Exclusive Advisory Access
+              </span>
+              <h3 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-white mb-4 sm:mb-6 tracking-tight leading-tight">
+                Access Rare & <br className="hidden sm:block" />
+                <span className="text-gold-500 italic">Off-Market Opportunities</span>
               </h3>
-              <p className="text-gold-500 font-sans text-sm md:text-base uppercase tracking-[0.3em] font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
-                Private Access to Curated Global Investment Opportunities
+              <p className="text-slate-200 font-sans text-xs sm:text-sm md:text-lg max-w-lg mb-6 sm:mb-10 leading-relaxed opacity-90">
+                Private Access to Curated Global Investment Opportunities for High-Net-Worth Individuals.
               </p>
+              <div className="flex items-center gap-4">
+                <div className="h-px w-12 bg-gold-500"></div>
+                <div className="flex items-center gap-2 text-white font-bold uppercase tracking-widest text-xs group-hover:text-gold-500 transition-colors">
+                  Explore Private Listings
+                  <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -674,47 +615,14 @@ const OffMarketSection = () => {
 };
 
 const FeaturedProperties = () => {
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleRequestDetails = (property: Property) => {
-    setSelectedProperty(property);
-    setIsModalOpen(true);
-  };
-
-  const handleSubmitLead = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    
-    try {
-      const response = await fetch("https://formspree.io/f/xkoqnwbq", {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        setSubmitted(true);
-        setTimeout(() => {
-          setIsModalOpen(false);
-          setSubmitted(false);
-        }, 3000);
-      }
-    } catch (error) {
-      alert('Error submitting request.');
-    }
-  };
+  const navigate = useNavigate();
 
   return (
-    <section id="properties" className="py-32 bg-navy-950 scroll-mt-20 relative z-10 border-t border-gold-500/10">
+    <section id="properties" className="relative py-20 mb-20 bg-navy-950 scroll-mt-20 border-t border-gold-500/10 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Featured Global Properties</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4 leading-tight">Featured Global Properties</h2>
             <div className="w-24 h-1 bg-gold-500 mb-8"></div>
             <p className="text-slate-300">
               Exclusive off-market and rare investment opportunities curated for our elite clientele. 
@@ -724,10 +632,7 @@ const FeaturedProperties = () => {
             </p>
           </div>
           <button 
-            onClick={() => {
-              const element = document.getElementById('consultation-form');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }}
+            onClick={() => navigate('/consultation')}
             className="flex items-center gap-2 text-gold-500 font-bold uppercase tracking-widest text-xs border border-gold-500/30 px-6 py-3 hover:bg-gold-500 hover:text-navy-900 transition-all"
           >
             <Calendar size={16} />
@@ -783,12 +688,12 @@ const FeaturedProperties = () => {
                   ))}
                 </div>
 
-                <button 
-                  onClick={() => handleRequestDetails(property)}
-                  className="w-full py-3 bg-transparent border border-gold-500 text-gold-500 font-bold uppercase tracking-widest text-xs hover:bg-gold-500 hover:text-navy-900 transition-all"
+                <Link 
+                  to={`/property/${property.id}`}
+                  className="w-full py-3 bg-transparent border border-gold-500 text-gold-500 font-bold uppercase tracking-widest text-xs hover:bg-gold-500 hover:text-navy-900 transition-all block text-center"
                 >
                   Request Private Details
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}
@@ -798,123 +703,20 @@ const FeaturedProperties = () => {
           <p className="text-slate-500 text-sm italic mb-8">
             Looking for something specific? Our global network provides access to thousands of off-market assets.
           </p>
-          <a 
-            href="#consultation-form"
+          <Link 
+            to="/consultation"
             className="inline-flex items-center gap-2 text-white font-bold uppercase tracking-widest text-sm hover:text-gold-500 transition-all"
           >
             View Full Portfolio via Advisory <ChevronRight size={18} className="text-gold-500" />
-          </a>
+          </Link>
         </div>
       </div>
-
-      {/* Lead Capture Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-navy-900 border border-gold-500/30 w-full max-w-lg p-8 relative overflow-hidden"
-          >
-            <button 
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
-            >
-              <X size={24} />
-            </button>
-
-            {submitted ? (
-              <div className="py-12 text-center">
-                <CheckCircle2 className="text-gold-500 mx-auto mb-4" size={64} />
-                <h3 className="text-2xl font-display font-bold text-white mb-2">Request Sent</h3>
-                <p className="text-slate-400">An advisor will contact you shortly with the full investment memorandum for {selectedProperty?.title}.</p>
-              </div>
-            ) : (
-              <>
-                <div className="mb-8">
-                  <h3 className="text-2xl font-display font-bold text-white mb-2">Request Investment Info</h3>
-                  <p className="text-slate-400 text-sm">
-                    Property: <span className="text-gold-500 font-bold">{selectedProperty?.title}</span>
-                  </p>
-                </div>
-
-                <form onSubmit={handleSubmitLead} className="space-y-4">
-                  <input type="hidden" name="property_interest" value={selectedProperty?.title || ''} />
-                  <input type="hidden" name="subject" value={`Property Inquiry: ${selectedProperty?.title}`} />
-                  
-                  <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Full Name</label>
-                    <input 
-                      type="text" name="name" required
-                      className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Email</label>
-                      <input 
-                        type="email" name="email" required
-                        className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Phone</label>
-                      <input 
-                        type="tel" name="phone" required
-                        className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Investment Budget</label>
-                      <select 
-                        name="budget" required
-                        className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm appearance-none"
-                      >
-                        <option value="">Select Range</option>
-                        <option value="Under $1M">Under $1M</option>
-                        <option value="$1M - $5M">$1M - $5M</option>
-                        <option value="$5M - $10M">$5M - $10M</option>
-                        <option value="$10M+">$10M+</option>
-                      </select>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Preferred Location</label>
-                      <input 
-                        type="text" name="preferred_location" required placeholder="e.g. Europe, UAE"
-                        className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="pt-4">
-                    <button 
-                      type="submit"
-                      className="w-full bg-gold-500 hover:bg-gold-600 text-navy-900 py-4 font-bold uppercase tracking-widest text-xs transition-all"
-                    >
-                      Request Details
-                    </button>
-                    <p className="text-[10px] text-slate-500 mt-4 text-center leading-relaxed">
-                      By submitting, you agree to our privacy policy. Your information is strictly confidential and will only be used for advisory purposes.
-                    </p>
-                  </div>
-                </form>
-              </>
-            )}
-          </motion.div>
-        </div>
-      )}
     </section>
   );
 };
 
 const PublicProperties = () => {
   const [properties, setProperties] = useState<any[]>([]);
-  const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -930,47 +732,16 @@ const PublicProperties = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleRequestDetails = (property: any) => {
-    setSelectedProperty(property);
-    setIsModalOpen(true);
-  };
-
-  const handleSubmitInquiry = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    
-    const inquiryData = {
-      propertyId: selectedProperty.id,
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
-      message: formData.get('message') as string,
-      createdAt: Timestamp.now()
-    };
-
-    try {
-      await addDoc(collection(db, 'propertyInquiries'), inquiryData);
-      setSubmitted(true);
-      setTimeout(() => {
-        setIsModalOpen(false);
-        setSubmitted(false);
-      }, 3000);
-    } catch (error) {
-      handleFirestoreError(error, OperationType.CREATE, 'propertyInquiries');
-    }
-  };
-
   if (loading) return null;
   if (properties.length === 0) return null;
 
   return (
-    <section id="public-properties" className="py-24 bg-navy-950 scroll-mt-20">
+    <section id="public-properties" className="relative py-20 mb-20 bg-navy-950 scroll-mt-20 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4 uppercase tracking-wider">Global Listings</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4 uppercase tracking-wider leading-tight">Global Listings</h2>
           <div className="w-24 h-1 bg-gold-500 mx-auto mb-8"></div>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
             Verified properties from our global network of owners and investment partners.
           </p>
         </div>
@@ -1012,131 +783,52 @@ const PublicProperties = () => {
                   {property.description}
                 </p>
 
-                <button 
-                  onClick={() => handleRequestDetails(property)}
-                  className="w-full py-3 bg-transparent border border-gold-500 text-gold-500 font-bold uppercase tracking-widest text-xs hover:bg-gold-500 hover:text-navy-900 transition-all"
+                <Link 
+                  to={`/property/${property.id}`}
+                  className="w-full py-3 bg-transparent border border-gold-500 text-gold-500 font-bold uppercase tracking-widest text-xs hover:bg-gold-500 hover:text-navy-900 transition-all block text-center"
                 >
                   Request Details
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
-
-      {/* Inquiry Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-navy-900 border border-gold-500/30 w-full max-w-lg p-8 relative overflow-hidden"
-          >
-            <button 
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
-            >
-              <X size={24} />
-            </button>
-
-            {submitted ? (
-              <div className="py-12 text-center">
-                <CheckCircle2 className="text-gold-500 mx-auto mb-4" size={64} />
-                <h3 className="text-2xl font-display font-bold text-white mb-2">Inquiry Sent</h3>
-                <p className="text-slate-400">Our advisory team will contact you shortly with more information about this property.</p>
-              </div>
-            ) : (
-              <>
-                <div className="mb-8">
-                  <h3 className="text-2xl font-display font-bold text-white mb-2">Request Property Details</h3>
-                  <p className="text-slate-400 text-sm">
-                    Location: <span className="text-gold-500 font-bold">{selectedProperty?.location}</span>
-                  </p>
-                </div>
-
-                <form onSubmit={handleSubmitInquiry} className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Full Name</label>
-                    <input 
-                      type="text" name="name" required
-                      className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Email</label>
-                      <input 
-                        type="email" name="email" required
-                        className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Phone</label>
-                      <input 
-                        type="tel" name="phone" required
-                        className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Message (Optional)</label>
-                    <textarea 
-                      name="message" rows={3}
-                      className="w-full bg-navy-800 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none text-sm resize-none"
-                    ></textarea>
-                  </div>
-
-                  <div className="pt-4">
-                    <button 
-                      type="submit"
-                      className="w-full bg-gold-500 hover:bg-gold-600 text-navy-900 py-4 font-bold uppercase tracking-widest text-xs transition-all"
-                    >
-                      Send Inquiry
-                    </button>
-                  </div>
-                </form>
-              </>
-            )}
-          </motion.div>
-        </div>
-      )}
     </section>
   );
 };
 
 const PropertyListing = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
+    setError(null);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
-    const submissionData = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
-      propertyType: formData.get('propertyType') as string,
-      location: formData.get('location') as string,
-      price: formData.get('price') as string,
-      description: formData.get('description') as string,
-      imageUrl: formData.get('imageUrl') as string,
-      status: 'pending',
-      createdAt: Timestamp.now()
-    };
-
     try {
-      await addDoc(collection(db, 'propertySubmissions'), submissionData);
-      setSubmitted(true);
-      form.reset();
-    } catch (error) {
-      handleFirestoreError(error, OperationType.CREATE, 'propertySubmissions');
+      const response = await fetch("https://formspree.io/f/xkoqnwbq", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setSubmitted(true);
+        form.reset();
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -1177,7 +869,7 @@ const PropertyListing = () => {
   ];
 
   return (
-    <section id="list-property" className="py-24 bg-navy-900 scroll-mt-20">
+    <section id="list-property" className="relative py-20 mb-20 bg-navy-900 scroll-mt-20 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left: Info & Pricing */}
@@ -1237,7 +929,7 @@ const PropertyListing = () => {
               <div className="py-20 text-center">
                 <CheckCircle2 className="text-gold-500 mx-auto mb-6" size={64} />
                 <h3 className="text-3xl font-display font-bold text-white mb-4">Submission Received</h3>
-                <p className="text-slate-400 mb-8">Our team will review your property details and contact you within 24-48 hours for the next steps.</p>
+                <p className="text-slate-400 mb-8">Thank you. Your request has been submitted successfully. Our team will contact you shortly.</p>
                 <button 
                   onClick={() => setSubmitted(false)}
                   className="text-gold-500 font-bold uppercase tracking-widest text-sm border-b border-gold-500/30 pb-1"
@@ -1248,7 +940,12 @@ const PropertyListing = () => {
             ) : (
               <>
                 <h3 className="text-2xl font-display font-bold text-white mb-8">Property Submission</h3>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form 
+                  action="https://formspree.io/f/xkoqnwbq"
+                  method="POST"
+                  onSubmit={handleSubmit} 
+                  className="space-y-6"
+                >
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Full Name</label>
@@ -1322,13 +1019,19 @@ const PropertyListing = () => {
                     ></textarea>
                   </div>
 
+                  {error && (
+                    <div className="text-red-500 text-sm font-bold text-center">
+                      {error}
+                    </div>
+                  )}
+
                   <button 
                     type="submit"
-                    disabled={loading}
-                    className="w-full bg-gold-500 hover:bg-gold-600 text-navy-950 py-4 font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2"
+                    disabled={submitting}
+                    className="w-full bg-gold-500 hover:bg-gold-600 text-navy-950 py-4 font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? 'Processing...' : 'Submit for Review'}
-                    {!loading && <ArrowRight size={18} />}
+                    {submitting ? 'Processing...' : 'Submit for Review'}
+                    {!submitting && <ArrowRight size={18} />}
                   </button>
                   <p className="text-[10px] text-slate-500 text-center uppercase tracking-widest">
                     * All listings are subject to admin approval before going live.
@@ -1344,10 +1047,15 @@ const PropertyListing = () => {
 };
 
 const BookingForms = () => {
+  const navigate = useNavigate();
   const [visaSubmitted, setVisaSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleVisaSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    setError(null);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
@@ -1364,20 +1072,22 @@ const BookingForms = () => {
         setVisaSubmitted(true);
         form.reset();
       } else {
-        alert('There was an error submitting your request. Please try again.');
+        setError('Something went wrong. Please try again.');
       }
-    } catch (error) {
-      alert('There was an error submitting your request. Please try again.');
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="py-24 bg-navy-900 scroll-mt-20">
+    <section id="contact" className="relative py-20 mb-20 bg-navy-900 scroll-mt-20 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Get In Touch</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4 leading-tight">Get In Touch</h2>
           <div className="w-24 h-1 bg-gold-500 mx-auto mb-8"></div>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
             Our global advisory team is available to discuss your residency and investment requirements.
           </p>
         </div>
@@ -1386,8 +1096,8 @@ const BookingForms = () => {
           {/* Visa Form */}
           <div id="visa-form" className="bg-navy-800 p-8 md:p-12 border border-gold-500/20 rounded-sm scroll-mt-24">
             <div className="flex items-center gap-4 mb-8">
-              <Globe className="text-gold-500" size={32} />
-              <h2 className="text-3xl font-display font-bold text-white">Residency by Investment Consultation</h2>
+              <Globe className="text-gold-500 flex-shrink-0" size={32} />
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-white leading-tight">Residency by Investment Consultation</h2>
             </div>
             
             {visaSubmitted ? (
@@ -1398,7 +1108,7 @@ const BookingForms = () => {
               >
                 <CheckCircle2 className="text-gold-500 mx-auto mb-4" size={48} />
                 <h3 className="text-white text-xl font-bold mb-2">Request Received</h3>
-                <p className="text-slate-300">Thank you for your consultation request. Our residency advisors will contact you shortly.</p>
+                <p className="text-slate-300">Thank you. Your request has been submitted successfully. Our team will contact you shortly.</p>
                 <button 
                   onClick={() => setVisaSubmitted(false)}
                   className="mt-6 text-gold-500 font-bold text-sm uppercase tracking-widest hover:underline"
@@ -1483,11 +1193,17 @@ const BookingForms = () => {
                     className="w-full bg-navy-900 border border-slate-700 p-3 text-white focus:border-gold-500 outline-none transition-colors"
                   ></textarea>
                 </div>
+                {error && (
+                  <div className="md:col-span-2 text-red-500 text-sm font-bold text-center">
+                    {error}
+                  </div>
+                )}
                 <button 
                   type="submit"
-                  className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-4 rounded-sm font-bold transition-all uppercase tracking-widest"
+                  disabled={submitting}
+                  className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-4 rounded-sm font-bold transition-all uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Request Residency by Investment Consultation
+                  {submitting ? 'Submitting...' : 'Request Residency by Investment Consultation'}
                 </button>
               </form>
             )}
@@ -1507,7 +1223,7 @@ const PartnerNetwork = () => {
   ];
 
   return (
-    <section className="py-24 bg-navy-800">
+    <section className="relative py-20 mb-20 bg-navy-800 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-display font-bold text-white mb-6">Verified Partner Network</h2>
@@ -1543,7 +1259,7 @@ const Compliance = () => {
   ];
 
   return (
-    <section id="compliance" className="py-24 bg-navy-900 scroll-mt-20">
+    <section id="compliance" className="relative py-20 mb-20 bg-navy-900 scroll-mt-20 block clear-both z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-display font-bold text-white mb-4">Client Documentation & Compliance</h2>
@@ -1582,7 +1298,7 @@ const Compliance = () => {
 
 const LegalDisclaimer = () => {
   return (
-    <section className="py-16 bg-navy-800 border-y border-gold-500/10">
+    <section className="relative py-16 mb-20 bg-navy-800 border-y border-gold-500/10 block clear-both z-10">
       <div className="max-w-4xl mx-auto px-4 text-center">
         <h3 className="text-xs uppercase tracking-[0.3em] text-gold-500 font-bold mb-6">Legal Disclaimer</h3>
         <div className="space-y-4 text-sm text-slate-500 leading-relaxed">
@@ -1597,7 +1313,7 @@ const LegalDisclaimer = () => {
 const FinalCTA = () => {
   const navigate = useNavigate();
   return (
-    <section className="py-24 bg-navy-900 relative overflow-hidden">
+    <section className="relative py-20 mb-20 bg-navy-900 overflow-hidden block clear-both z-10">
       <div className="absolute inset-0 opacity-10">
         <img 
           src="https://images.unsplash.com/photo-1464037862646-647f1856d5ec?auto=format&fit=crop&q=80&w=2000" 
@@ -1607,7 +1323,7 @@ const FinalCTA = () => {
         />
       </div>
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8">Start Your Global Mobility Journey</h2>
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-white mb-8 leading-tight">Start Your Global Mobility Journey</h2>
         <div className="flex flex-col sm:flex-row justify-center gap-6">
           <Link 
             to="/residency-programs" 
@@ -1688,12 +1404,12 @@ const Home = () => {
   return (
     <>
       <Hero />
+      <FeaturedProperties />
+      <InvestmentPrograms />
+      <OffMarketSection />
       <Services />
       <HowItWorks />
-      <InvestmentPrograms />
       <WhyInvest />
-      <OffMarketSection />
-      <FeaturedProperties />
       <PublicProperties />
       <PropertyListing />
       <BookingForms />
@@ -1723,6 +1439,9 @@ export default function App() {
             <Route path="/residency-by-investment-advisory" element={<ResidencyByInvestmentAdvisoryPage />} />
             <Route path="/residency-programs" element={<ResidencyProgramsPage />} />
             <Route path="/program/:slug" element={<ProgramDetailsPage />} />
+            <Route path="/property/:id" element={<PropertyDetailsPage />} />
+            <Route path="/off-market" element={<OffMarketPage />} />
+            <Route path="/off-market/:id" element={<OffMarketPropertyDetails />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />

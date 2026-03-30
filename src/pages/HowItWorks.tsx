@@ -98,7 +98,7 @@ const HowItWorks = () => {
             Contact our advisory team today to begin your journey towards seamless global mobility.
           </p>
           <Link 
-            to="/#contact" 
+            to="/consultation" 
             className="inline-flex items-center gap-2 bg-navy-900 text-gold-500 px-10 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-navy-800 transition-colors"
           >
             Contact Advisor

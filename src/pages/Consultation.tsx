@@ -5,9 +5,13 @@ import { Link } from 'react-router-dom';
 
 const Consultation = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    setError(null);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
@@ -24,10 +28,12 @@ const Consultation = () => {
         setSubmitted(true);
         form.reset();
       } else {
-        alert('There was an error submitting your request. Please try again.');
+        setError('Something went wrong. Please try again.');
       }
-    } catch (error) {
-      alert('There was an error submitting your request. Please try again.');
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -68,7 +74,7 @@ const Consultation = () => {
               <CheckCircle2 className="text-gold-500 mx-auto mb-6" size={64} />
               <h3 className="text-white text-2xl font-bold mb-4">Consultation Requested</h3>
               <p className="text-slate-300 text-lg mb-8">
-                Thank you for your interest. A senior advisor will review your profile and contact you within 24 hours for a confidential discussion.
+                Thank you. Your request has been submitted successfully. Our team will contact you shortly.
               </p>
               <button 
                 onClick={() => setSubmitted(false)}
@@ -78,12 +84,12 @@ const Consultation = () => {
               </button>
             </motion.div>
           ) : (
-            <form 
-              action="https://formspree.io/f/xkoqnwbq" 
-              method="POST"
-              onSubmit={handleSubmit} 
-              className="grid md:grid-cols-2 gap-8 relative z-10"
-            >
+          <form 
+            action="https://formspree.io/f/xkoqnwbq" 
+            method="POST"
+            onSubmit={handleSubmit} 
+            className="grid md:grid-cols-2 gap-8 relative z-10"
+          >
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-slate-400 font-bold">Full Name</label>
                 <input 
@@ -120,9 +126,10 @@ const Consultation = () => {
                 <label className="text-xs uppercase tracking-widest text-slate-400 font-bold">Investment Budget</label>
                 <select 
                   name="budget" required
+                  defaultValue=""
                   className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors appearance-none"
                 >
-                  <option value="" disabled selected>Select Budget Range</option>
+                  <option value="" disabled>Select Budget Range</option>
                   <option value="€250k - €500k">€250,000 - €500,000</option>
                   <option value="€500k - €1M">€500,000 - €1,000,000</option>
                   <option value="€1M - €5M">€1,000,000 - €5,000,000</option>
@@ -133,9 +140,10 @@ const Consultation = () => {
                 <label className="text-xs uppercase tracking-widest text-slate-400 font-bold">Preferred Country</label>
                 <select 
                   name="country" required
+                  defaultValue=""
                   className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors appearance-none"
                 >
-                  <option value="" disabled selected>Select Country</option>
+                  <option value="" disabled>Select Country</option>
                   <option value="Portugal">Portugal</option>
                   <option value="Greece">Greece</option>
                   <option value="Other">Other / Undecided</option>
@@ -145,9 +153,10 @@ const Consultation = () => {
                 <label className="text-xs uppercase tracking-widest text-slate-400 font-bold">Timeline</label>
                 <select 
                   name="timeline" required
+                  defaultValue=""
                   className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors appearance-none"
                 >
-                  <option value="" disabled selected>Expected Timeline</option>
+                  <option value="" disabled>Expected Timeline</option>
                   <option value="Immediate">Immediate (Next 3 months)</option>
                   <option value="3-6 Months">3 - 6 Months</option>
                   <option value="6-12 Months">6 - 12 Months</option>
@@ -163,12 +172,18 @@ const Consultation = () => {
                   className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
                 ></textarea>
               </div>
+              {error && (
+                <div className="md:col-span-2 text-red-500 text-sm font-bold text-center">
+                  {error}
+                </div>
+              )}
               <div className="md:col-span-2 pt-4">
                 <button 
                   type="submit"
-                  className="w-full bg-gold-500 hover:bg-gold-600 text-navy-900 py-5 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3 shadow-lg shadow-gold-500/20"
+                  disabled={submitting}
+                  className="w-full bg-gold-500 hover:bg-gold-600 text-navy-900 py-5 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3 shadow-lg shadow-gold-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Schedule Private Consultation
+                  {submitting ? 'Submitting...' : 'Schedule Private Consultation'}
                   <Send size={18} />
                 </button>
                 <p className="text-center text-slate-400 text-[10px] mt-4 uppercase tracking-widest">

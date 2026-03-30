@@ -50,7 +50,7 @@ const programs: Program[] = [
       'Valid health insurance'
     ],
     timeline: '12–18 months for initial residency permit.',
-    image: 'https://images.unsplash.com/photo-1558191053-8edcb01e1da3?auto=format&fit=crop&q=80&w=1200'
+    image: 'https://images.unsplash.com/photo-1585211756841-9882341ca31b?auto=format&fit=crop&q=80&w=1200'
   },
   {
     id: 'greece',
@@ -105,10 +105,10 @@ const ResidencyByInvestmentAdvisory = () => {
               exit={{ opacity: 0 }}
             >
               <div className="text-center mb-16">
-                <span className="text-gold-500 font-bold uppercase tracking-[0.3em] text-sm mb-4 block">Investment Migration</span>
-                <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">Global Residency & Citizenship</h1>
+                <span className="text-gold-500 font-bold uppercase tracking-[0.3em] text-[10px] sm:text-sm mb-4 block">Investment Migration</span>
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-white mb-6 leading-tight">Global Residency & Citizenship</h1>
                 <div className="w-24 h-1 bg-gold-500 mx-auto mb-8"></div>
-                <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
                   Secure your future with residency and citizenship by investment. We connect you with verified immigration consultants to navigate the world's most prestigious programs.
                 </p>
               </div>
@@ -196,9 +196,9 @@ const ResidencyByInvestmentAdvisory = () => {
               <div className="grid lg:grid-cols-2 gap-12 mb-16">
                 <div>
                   <div className="mb-8">
-                    <span className="text-gold-500 font-bold uppercase tracking-[0.2em] text-xs mb-2 block">{selectedProgram.type}</span>
-                    <h2 className="text-5xl font-display font-bold text-white mb-6">{selectedProgram.country}</h2>
-                    <p className="text-xl text-slate-300 leading-relaxed">{selectedProgram.overview}</p>
+                    <span className="text-gold-500 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs mb-2 block">{selectedProgram.type}</span>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight">{selectedProgram.country}</h2>
+                    <p className="text-lg sm:text-xl text-slate-300 leading-relaxed">{selectedProgram.overview}</p>
                   </div>
 
                   <div className="space-y-8">

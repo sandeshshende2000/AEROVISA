@@ -5,9 +5,13 @@ import BackButton from '../components/BackButton';
 
 const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    setError(null);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     
@@ -24,10 +28,12 @@ const Contact = () => {
         setSubmitted(true);
         form.reset();
       } else {
-        alert('There was an error submitting your request. Please try again.');
+        setError('Something went wrong. Please try again.');
       }
-    } catch (error) {
-      alert('There was an error submitting your request. Please try again.');
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -106,7 +112,7 @@ const Contact = () => {
                 >
                   <CheckCircle2 className="text-gold-500 mx-auto mb-4" size={48} />
                   <h3 className="text-white text-xl font-bold mb-2">Message Sent</h3>
-                  <p className="text-slate-300">Thank you for contacting us. Our advisory team will respond to your inquiry shortly.</p>
+                  <p className="text-slate-300">Thank you. Your request has been submitted successfully. Our team will contact you shortly.</p>
                   <button 
                     onClick={() => setSubmitted(false)}
                     className="mt-6 text-gold-500 font-bold text-sm uppercase tracking-widest hover:underline"
@@ -150,12 +156,18 @@ const Contact = () => {
                       className="w-full bg-navy-900 border border-slate-700 p-4 text-white focus:border-gold-500 outline-none transition-colors"
                     ></textarea>
                   </div>
+                  {error && (
+                    <div className="md:col-span-2 text-red-500 text-sm font-bold text-center">
+                      {error}
+                    </div>
+                  )}
                   <button 
                     type="submit"
-                    className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-5 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3"
+                    disabled={submitting}
+                    className="md:col-span-2 bg-gold-500 hover:bg-gold-600 text-navy-900 py-5 rounded-sm font-bold transition-all uppercase tracking-widest flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send Message
-                    <Send size={18} />
+                    {submitting ? 'Sending...' : 'Send Message'}
+                    {!submitting && <Send size={18} />}
                   </button>
                 </form>
               )}
