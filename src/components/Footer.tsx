@@ -45,21 +45,17 @@ const Footer: React.FC = () => {
           <ul className="space-y-4 text-white/40 font-sans text-sm tracking-wide">
             <li className="flex items-center gap-3">
               <Mail size={16} className="text-luxury-gold" />
-              <a href="mailto:concierge@aerovisa.global" className="hover:text-white transition-colors">concierge@aerovisa.global</a>
-            </li>
-            <li className="flex items-center gap-3">
-              <Phone size={16} className="text-luxury-gold" />
-              <a href="tel:+1234567890" className="hover:text-white transition-colors">+1 (234) 567-890</a>
+              <a href="mailto:info@aerovisaglobal.com" className="hover:text-white transition-colors">info@aerovisaglobal.com</a>
             </li>
             <li className="flex items-center gap-3">
               <span className="text-luxury-gold text-xs font-bold uppercase tracking-widest">WhatsApp</span>
               <a 
-                href="https://wa.me/1234567890" 
+                href="https://wa.me/917768081438" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
               >
-                +1 (234) 567-890
+                +91 7768081438
               </a>
             </li>
           </ul>

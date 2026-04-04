@@ -81,7 +81,7 @@ const HNIListingSection: React.FC = () => {
                   name="phone"
                   type="tel" 
                   className="w-full bg-white/5 border border-white/10 p-4 text-white text-sm focus:border-luxury-gold outline-none transition-all" 
-                  placeholder="+1 (234) 567-890" 
+                  placeholder="+91 00000 00000" 
                   required 
                 />
               </div>

@@ -113,7 +113,7 @@ const AdvisorContact: React.FC = () => {
                     name="phone"
                     required
                     type="tel"
-                    placeholder="+1 (555) 000-0000"
+                    placeholder="+91 00000 00000"
                     className="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-4 text-white placeholder:text-white/10 focus:border-luxury-gold/50 outline-none transition-all"
                   />
                 </div>

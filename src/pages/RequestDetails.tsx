@@ -141,7 +141,7 @@ const RequestDetails: React.FC = () => {
               <div className="space-y-6">
                 <div>
                   <label className="block text-white/40 text-[10px] uppercase tracking-widest mb-2">Phone / WhatsApp</label>
-                  <input name="phone" type="tel" className="w-full bg-white/5 border border-white/10 p-4 text-white text-sm focus:border-luxury-gold outline-none transition-all" placeholder="+1 (234) 567-890" required />
+                  <input name="phone" type="tel" className="w-full bg-white/5 border border-white/10 p-4 text-white text-sm focus:border-luxury-gold outline-none transition-all" placeholder="+91 00000 00000" required />
                 </div>
                 <div>
                   <label className="block text-white/40 text-[10px] uppercase tracking-widest mb-2">Budget Range (€)</label>
