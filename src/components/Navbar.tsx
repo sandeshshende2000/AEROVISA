@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe, Home, Briefcase, MapPin, PlusCircle, UserCheck, Phone } from 'lucide-react';
+import { Menu, X, Globe, Home, Briefcase, MapPin, PlusCircle, UserCheck, Phone, BookOpen, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === '/';
 
   const menuItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -14,6 +15,7 @@ const Navbar: React.FC = () => {
     { name: 'Portugal', path: '/country/portugal', icon: MapPin },
     { name: 'Latvia', path: '/country/latvia', icon: MapPin },
     { name: 'UK', path: '/country/uk', icon: MapPin },
+    { name: 'Insights', path: '/blog', icon: BookOpen },
     { name: 'List Property', path: '/list-property', icon: PlusCircle },
     { name: 'Investor Access', path: '/investor-access', icon: UserCheck },
     { name: 'Speak to Advisor', path: '/advisor-contact', icon: Phone },
@@ -26,25 +28,29 @@ const Navbar: React.FC = () => {
       {/* Sticky Header */}
       <header className="fixed top-0 left-0 w-full z-50 bg-luxury-navy/80 backdrop-blur-md border-b border-white/5 pt-[env(safe-area-inset-top)]">
         <div className="max-w-7xl mx-auto px-6 h-20 sm:h-24 flex items-center justify-between relative">
-          {/* Left Spacer for Back Button on subpages */}
-          <div className="w-12 sm:w-24" />
-
-          {/* Centered Brand Name */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+          {/* Left-Side Branding */}
+          <div className={`flex items-center transition-all duration-500 ${!isHome ? 'pl-16 sm:pl-24' : ''}`}>
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 gold-gradient rounded-sm flex items-center justify-center transform group-hover:rotate-45 transition-transform duration-500 hidden xs:flex">
-                <span className="text-luxury-navy font-serif font-bold text-lg sm:text-xl -rotate-45 group-hover:rotate-0 transition-transform duration-500">A</span>
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+                <Shield className="absolute text-luxury-gold w-full h-full transform group-hover:scale-110 transition-transform duration-500" strokeWidth={1.5} />
+                <Globe className="text-luxury-gold w-5 h-5 sm:w-6 sm:h-6 relative z-10" strokeWidth={1.5} />
+                <div className="absolute bottom-2 right-1 w-4 h-0.5 bg-luxury-gold rounded-full transform -rotate-45" />
               </div>
-              <span className="text-luxury-gold font-serif text-xl sm:text-2xl font-bold tracking-[0.05em] uppercase whitespace-nowrap">
-                AEROVISA <span className="text-white sm:text-luxury-gold">GLOBAL</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="text-luxury-gold font-serif text-lg sm:text-xl font-bold tracking-[0.1em] uppercase leading-none">
+                  AEROVISA <span className="text-white">GLOBAL</span>
+                </span>
+                <span className="text-[8px] sm:text-[10px] text-white/40 font-sans tracking-[0.2em] uppercase mt-1 hidden xs:block">
+                  Global Residency & Investment Advisory
+                </span>
+              </div>
             </Link>
           </div>
 
           {/* Right-Side Menu Trigger */}
           <button
             onClick={toggleMenu}
-            className="w-10 h-10 sm:w-12 sm:h-12 glass rounded-full flex items-center justify-center text-luxury-gold hover:text-white transition-colors duration-300 group"
+            className="w-10 h-10 sm:w-12 sm:h-12 glass rounded-full flex items-center justify-center text-luxury-gold hover:text-white transition-colors duration-300 group z-50"
           >
             {isOpen ? <X size={20} /> : <Menu size={20} className="group-hover:scale-110 transition-transform" />}
           </button>

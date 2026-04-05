@@ -13,15 +13,19 @@ import InvestorAccess from './pages/InvestorAccess';
 import RequestDetails from './pages/RequestDetails';
 import AdvisorContact from './pages/AdvisorContact';
 import CategoryDetail from './pages/CategoryDetail';
+import Blog from './pages/Blog';
+import BlogPostDetail from './pages/BlogPostDetail';
 import ThankYou from './pages/ThankYou';
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const hideHNISection = ['/list-property', '/advisor-contact', '/investor-access', '/request-details', '/thank-you'].includes(location.pathname);
+  const hideHNISection = ['/list-property', '/advisor-contact', '/investor-access', '/request-details', '/thank-you', '/blog'].some(path => location.pathname.startsWith(path));
 
   useEffect(() => {
-    document.title = "AeroVisa Global | Luxury Real Estate & Investment Opportunities";
-  }, []);
+    if (!location.pathname.startsWith('/blog/')) {
+      document.title = "AeroVisa Global | Luxury Real Estate & Investment Opportunities";
+    }
+  }, [location]);
 
   return (
     <div className="min-h-screen bg-luxury-navy flex flex-col">
@@ -39,6 +43,8 @@ const AppContent: React.FC = () => {
           <Route path="/villas" element={<CategoryDetail />} />
           <Route path="/hotels" element={<CategoryDetail />} />
           <Route path="/apartments" element={<CategoryDetail />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPostDetail />} />
           <Route path="/list-property" element={<ListProperty />} />
           <Route path="/investor-access" element={<InvestorAccess />} />
           <Route path="/request-details" element={<RequestDetails />} />

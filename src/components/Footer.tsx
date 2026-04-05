@@ -33,6 +33,7 @@ const Footer: React.FC = () => {
           <h4 className="text-white font-serif text-lg mb-6 tracking-widest uppercase">Quick Links</h4>
           <ul className="space-y-4 text-white/40 font-sans text-sm tracking-wide">
             <li><a href="/opportunities" className="hover:text-white transition-colors">Global Opportunities</a></li>
+            <li><a href="/blog" className="hover:text-white transition-colors">AeroVisa Insights</a></li>
             <li><a href="/list-property" className="hover:text-white transition-colors">List Your Property</a></li>
             <li><a href="/investor-access" className="hover:text-white transition-colors">Investor Access</a></li>
             <li><a href="/advisor-contact" className="hover:text-white transition-colors">Speak to an Advisor</a></li>
