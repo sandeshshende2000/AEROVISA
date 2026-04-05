@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -18,6 +18,10 @@ import ThankYou from './pages/ThankYou';
 const AppContent: React.FC = () => {
   const location = useLocation();
   const hideHNISection = ['/list-property', '/advisor-contact', '/investor-access', '/request-details', '/thank-you'].includes(location.pathname);
+
+  useEffect(() => {
+    document.title = "AeroVisa Global | Luxury Real Estate & Investment Opportunities";
+  }, []);
 
   return (
     <div className="min-h-screen bg-luxury-navy flex flex-col">
