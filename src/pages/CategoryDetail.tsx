@@ -16,15 +16,15 @@ interface CategoryInfo {
 
 const categoryData: Record<string, CategoryInfo> = {
   villas: {
-    title: 'Luxury Villas',
+    title: 'Luxury Villas Europe Investment',
     subtitle: 'Global Collection',
-    description: 'Exclusive beachfront and hillside estates across the Mediterranean and beyond, curated for high-net-worth investors.',
+    description: 'Exclusive off market real estate Europe: beachfront and hillside estates curated for luxury villas Europe investment.',
     heroImage: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1920&auto=format&fit=crop'
   },
   hotels: {
-    title: 'Hotels & Resorts',
+    title: 'Hotel Investment Europe ROI',
     subtitle: 'Hospitality Assets',
-    description: 'High-yield hospitality assets and boutique retreats in strategic global locations, offering stable returns and capital growth.',
+    description: 'High-yield hotel investment Europe ROI assets and boutique retreats in strategic global locations.',
     heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920&auto=format&fit=crop'
   },
   apartments: {

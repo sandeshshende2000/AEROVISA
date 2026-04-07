@@ -23,7 +23,7 @@ const AppContent: React.FC = () => {
 
   useEffect(() => {
     if (!location.pathname.startsWith('/blog/')) {
-      document.title = "AeroVisa Global | Luxury Real Estate & Investment Opportunities";
+      document.title = "AeroVisa Global | Global Real Estate Investment Platform";
     }
   }, [location]);
 

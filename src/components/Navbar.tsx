@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     { name: 'Portugal', path: '/country/portugal', icon: MapPin },
     { name: 'Latvia', path: '/country/latvia', icon: MapPin },
     { name: 'UK', path: '/country/uk', icon: MapPin },
-    { name: 'Insights', path: '/blog', icon: BookOpen },
+    { name: 'Blog', path: '/blog', icon: BookOpen },
     { name: 'List Property', path: '/list-property', icon: PlusCircle },
     { name: 'Investor Access', path: '/investor-access', icon: UserCheck },
     { name: 'Speak to Advisor', path: '/advisor-contact', icon: Phone },
@@ -93,7 +93,7 @@ const Navbar: React.FC = () => {
               <div className="flex gap-8 text-white/40 font-serif text-sm tracking-widest uppercase mt-auto">
                 <a href="#" className="hover:text-luxury-gold transition-colors">Instagram</a>
                 <a href="#" className="hover:text-luxury-gold transition-colors">YouTube</a>
-                <a href="#" className="hover:text-luxury-gold transition-colors">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/sandesh-shende-975699318" target="_blank" rel="noopener noreferrer" className="hover:text-luxury-gold transition-colors">LinkedIn</a>
               </div>
             </div>
           </motion.div>

@@ -38,7 +38,7 @@ const BlogPostDetail: React.FC = () => {
             onClick={() => navigate('/blog')}
             className="flex items-center gap-2 text-luxury-gold hover:gap-3 transition-all font-bold text-sm"
           >
-            <ArrowLeft size={18} /> Back to Insights
+            <ArrowLeft size={18} /> Back to Blog
           </button>
         </motion.div>
 
@@ -108,7 +108,7 @@ const BlogPostDetail: React.FC = () => {
 
         {/* Newsletter Signup */}
         <div className="mt-24 bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 text-center">
-          <h3 className="text-2xl font-serif text-white mb-4">Subscribe to AeroVisa Insights</h3>
+          <h3 className="text-2xl font-serif text-white mb-4">Subscribe to AeroVisa Blog</h3>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">
             Get exclusive off-market opportunities and market analysis delivered directly to your inbox.
           </p>

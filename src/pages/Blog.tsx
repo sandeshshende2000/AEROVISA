@@ -13,7 +13,7 @@ const Blog: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-serif text-white mb-4">AeroVisa Insights</h1>
+          <h1 className="text-4xl md:text-5xl font-serif text-white mb-4">AeroVisa Blog</h1>
           <p className="text-luxury-gold text-lg max-w-2xl mx-auto">
             Expert analysis, market trends, and exclusive guides for the global luxury real estate investor.
           </p>

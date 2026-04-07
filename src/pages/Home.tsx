@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 sm:py-32">
         {/* Background Video/Image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -42,21 +42,21 @@ const Home: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-navy/80 via-luxury-navy/40 to-luxury-navy" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-8 text-center pt-24 sm:pt-32">
+        <div className="relative z-10 max-w-5xl mx-auto px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <span className="text-luxury-gold text-[10px] sm:text-sm font-bold uppercase tracking-[0.3em] mb-6 block">
-              Exclusive Off-Market Opportunities
+              Exclusive Off Market Real Estate Europe
             </span>
             <h1 className="text-3xl sm:text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.3] sm:leading-[1.1] tracking-tight">
               Access Global <br />
-              <span className="gold-text-gradient italic">Off-Market</span> Real Estate
+              <span className="gold-text-gradient italic">Off Market</span> Real Estate
             </h1>
             <p className="text-white/60 text-sm sm:text-xl max-w-2xl mx-auto mb-12 font-sans leading-[1.6]">
-              Curated investment-grade properties across Europe for HNI investors, family offices, and global buyers.
+              Curated off market real estate Europe for HNI investors, family offices, and global buyers.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-4"
         >
           <span className="text-white/20 text-[10px] uppercase tracking-[0.4em] rotate-90 mb-8">Scroll</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-luxury-gold to-transparent" />
@@ -131,9 +131,9 @@ const Home: React.FC = () => {
               <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/5 pb-8">
                 <div>
                   <h3 className="text-3xl md:text-5xl font-serif text-white mb-2">
-                    Luxury <span className="gold-text-gradient italic">Villas</span>
+                    Luxury Villas <span className="gold-text-gradient italic">Europe Investment</span>
                   </h3>
-                  <p className="text-white/40 text-sm uppercase tracking-widest">Exclusive beachfront and hillside estates across the Mediterranean and beyond.</p>
+                  <p className="text-white/40 text-sm uppercase tracking-widest">Exclusive beachfront and hillside estates for luxury villas Europe investment.</p>
                 </div>
                 <Link 
                   to="/villas"
@@ -160,9 +160,9 @@ const Home: React.FC = () => {
               <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/5 pb-8">
                 <div>
                   <h3 className="text-3xl md:text-5xl font-serif text-white mb-2">
-                    Hotels & <span className="gold-text-gradient italic">Resorts</span>
+                    Hotel Investment <span className="gold-text-gradient italic">Europe ROI</span>
                   </h3>
-                  <p className="text-white/40 text-sm uppercase tracking-widest">High-yield hospitality assets and boutique retreats in strategic global locations.</p>
+                  <p className="text-white/40 text-sm uppercase tracking-widest">High-yield hotel investment Europe ROI assets and boutique retreats.</p>
                 </div>
                 <Link 
                   to="/hotels"

@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           <div className="flex gap-6">
             <a href="#" className="text-white/40 hover:text-luxury-gold transition-colors"><Instagram size={20} /></a>
             <a href="#" className="text-white/40 hover:text-luxury-gold transition-colors"><Youtube size={20} /></a>
-            <a href="#" className="text-white/40 hover:text-luxury-gold transition-colors"><Linkedin size={20} /></a>
+            <a href="https://www.linkedin.com/in/sandesh-shende-975699318" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-luxury-gold transition-colors"><Linkedin size={20} /></a>
           </div>
         </div>
 

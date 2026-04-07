@@ -136,7 +136,7 @@ const CountryDetail: React.FC<CountryDetailProps> = ({ slugOverride }) => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="max-w-2xl">
-              <span className="text-luxury-gold text-xs font-bold uppercase tracking-widest mb-4 block">Available Assets</span>
+              <span className="text-luxury-gold text-xs font-bold uppercase tracking-widest mb-4 block">Off Market Real Estate Europe Assets</span>
               <h2 className="text-4xl md:text-6xl font-serif text-white leading-tight">
                 Investment <span className="italic gold-text-gradient">Portfolio</span>
               </h2>
@@ -191,10 +191,10 @@ const CountryDetail: React.FC<CountryDetailProps> = ({ slugOverride }) => {
       <section className="py-24 px-8 bg-luxury-navy/50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-serif text-white mb-8">
-            Own a Luxury Property in <span className="gold-text-gradient italic">{country.name}</span>?
+            Luxury Villas Europe <span className="gold-text-gradient italic">Investment in {country.name}</span>
           </h2>
           <p className="text-white/60 text-lg mb-12">
-            List your asset with AeroVisa Global and gain direct access to our exclusive network of global HNI investors and family offices.
+            List your asset with AeroVisa Global and gain direct access to our exclusive network of off market real estate Europe investors.
           </p>
           <Link to="/list-property" className="px-12 py-5 border border-luxury-gold text-luxury-gold text-sm font-bold uppercase tracking-widest hover:bg-luxury-gold hover:text-luxury-navy transition-all duration-500 inline-block">
             List Your Property Globally

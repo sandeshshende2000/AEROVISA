@@ -18,13 +18,13 @@ const Opportunities: React.FC = () => {
             <div className="flex justify-center mb-8">
               <Breadcrumbs />
             </div>
-            <span className="text-luxury-gold text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] mb-6 block">Global Portfolio</span>
+            <span className="text-luxury-gold text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] mb-6 block">Off Market Real Estate Europe Portfolio</span>
             <h1 className="text-3xl sm:text-7xl font-serif text-white mb-8 leading-[1.3] sm:leading-tight">
               Investment <br />
               <span className="gold-text-gradient italic">Opportunities</span>
             </h1>
             <p className="text-white/40 text-sm sm:text-lg max-w-2xl mx-auto font-sans leading-[1.6]">
-              Curated investment-grade properties across Europe for HNI investors, family offices, and global buyers.
+              Curated luxury villas Europe investment and hotel investment Europe ROI opportunities for HNI investors and family offices.
             </p>
           </motion.div>
         </div>
