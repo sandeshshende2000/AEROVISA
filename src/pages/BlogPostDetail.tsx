@@ -12,7 +12,6 @@ const BlogPostDetail: React.FC = () => {
 
   useEffect(() => {
     if (post) {
-      document.title = `${post.title} | AeroVisa Global Blog`;
       window.scrollTo(0, 0);
     }
   }, [post]);

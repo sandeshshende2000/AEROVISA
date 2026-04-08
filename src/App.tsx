@@ -22,9 +22,7 @@ const AppContent: React.FC = () => {
   const hideHNISection = ['/list-property', '/advisor-contact', '/investor-access', '/request-details', '/thank-you', '/blog'].some(path => location.pathname.startsWith(path));
 
   useEffect(() => {
-    if (!location.pathname.startsWith('/blog/')) {
-      document.title = "AeroVisa Global | Global Real Estate Investment Platform";
-    }
+    document.title = "AeroVisa Global | Global Real Estate Investment Platform";
   }, [location]);
 
   return (
